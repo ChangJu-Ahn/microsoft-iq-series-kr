@@ -1,0 +1,36 @@
+EUV daily qual pass, LOT0007 follow-up
+
+워크숍용 합성 자료
+
+id: SH-2026-0074
+
+eqp_id: EQP-PHOT01
+
+lot_ids: LOT0007
+
+date: 2026-07-01
+
+기존 통합본문 (합성·의미 검수 전)
+워크숍용 합성 시나리오입니다. 원인·조치·후속 결과는 실제 운영 사실이 아니며, 원본의 의미·시간 정합성은 추가 검수가 필요합니다.
+
+
+
+인계 시각 (KST): 06:00
+
+FDC 센서: FOCUS_OFFSET
+
+관찰값: 정상 운전 및 현장 점검 기록
+
+
+
+관찰
+EUV scanner daily qualification은 pass다. focus offset 평균은 작은 음수로 안정돼 있고 reticle handling 이상 없다. 다음 조는 LOT0007 scratch NCR follow-up만 챙기면 된다. EQP-PHOT01는 인수 시점 06:00 기준 생산 가능 상태로 확인했다.
+
+해당 조의 조치
+대체 설비 가능 여부를 생산관리 화면에서 확인하고 큐를 비워 둠 FOCUS_OFFSET 기준값은 그대로 두었고 EQP-PHOT01 recipe 임의 변경은 하지 않음.
+
+다음 조 요청
+NCR 연결이 안 되더라도 lot history에는 이 메모를 붙여 주세요 대상 lot은 LOT0007이고, 인수자는 06:00 이후 첫 확인 결과만 간단히 남기면 됩니다.
+
+사후 기록 (관찰 당시 정보와 구분)
+EUV daily qual pass 기록은 LOT0007 scratch NCR과 직접 관련 없음으로 정리됐다; EUV-E690 항목에는 참고만 남았다.
