@@ -1,0 +1,5 @@
+azure-ai-agentserver-invocations==1.2.0
+azure-identity>=1.23,<2
+httpx>=0.28,<1
+openai>=2,<3
+pydantic>=2.11,<3

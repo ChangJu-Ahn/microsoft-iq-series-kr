@@ -1,0 +1,11 @@
+.venv/
+.azure/
+__pycache__/
+.pytest_cache/
+.env
+.env.*
+!.env.example
+/logs/
+*.zip
+.copilot-azure/
+node_modules/

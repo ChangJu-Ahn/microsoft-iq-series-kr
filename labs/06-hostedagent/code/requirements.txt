@@ -1,0 +1,3 @@
+-r agent/requirements.txt
+-r requirements-web.txt
+azure-ai-projects>=2.2,<3

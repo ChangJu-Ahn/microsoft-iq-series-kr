@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1140" viewBox="0 0 1440 1140" role="img" aria-labelledby="title">
+<title id="title">개별 업무 시나리오와 Foundry의 원본 근거 통합</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#495057"/></marker></defs>
+<rect width="1440" height="1140" fill="#ffffff"/>
+<text x="40" y="57.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="32" fill="#000000">FDE 워크숍 | 개별 업무 문제를 이해하고 복합 질문의 근거를 연결한다</text>
+<text x="40" y="107.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="22" fill="#000000">공통 고객: CJ전자 반도체 사업부 / 품질·설비·출하 판단과 반복 조사·비용 압력</text>
+<rect x="40" y="140" width="1360" height="105" rx="14" fill="#F3F2F1" stroke="#495057" stroke-width="2"/>
+<text x="58" y="182.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">01 공통 업무·데이터 관계 이해</text>
+<text x="58" y="225.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">설비 경보·생산 로트·품질 판정의 역할과 연결 조건 — 고객의 문제를 어디에서 확인할 것인가?</text>
+<path d="M260,254 l0,35" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M720,254 l0,35" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M1180,254 l0,35" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="305" width="440" height="210" rx="14" fill="#CFE4FA" stroke="#0078D4" stroke-width="2"/>
+<text x="58" y="347.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">02 운영 데이터를 근거로 조사</text>
+<text x="58" y="390.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">품질·생산·센서의 관계를 확인</text>
+<text x="58" y="417.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">온도·불량 / 남은 품질 조치 / 비용</text>
+<text x="58" y="444.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">설비 점검 / 측정 판정 근거</text>
+<text x="58" y="471.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000"></text>
+<text x="58" y="498.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">Fabric IQ · 독립적인 분석 시나리오</text>
+<rect x="500" y="305" width="440" height="210" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2"/>
+<text x="518" y="347.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">03 외부 정보의 근거 확보</text>
+<text x="518" y="390.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">공개 정보의 내용·출처를 읽음</text>
+<text x="518" y="417.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">현재 개별 검색: Foundry·Copilot</text>
+<text x="518" y="444.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">제조 공정 적용은 05에서 확인</text>
+<text x="518" y="471.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000"></text>
+<text x="518" y="498.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">Web IQ · 허용된 제공 키로 직접 호출</text>
+<rect x="960" y="305" width="440" height="210" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2"/>
+<text x="978" y="347.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">04 협업 요청·의견 파악</text>
+<text x="978" y="390.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">LOT0004 출하 검토 메일 조회</text>
+<text x="978" y="417.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">요청·보충 의견·추가 질문 구분</text>
+<text x="978" y="444.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">메일만으로 품질 상태를 확정 못함</text>
+<text x="978" y="471.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000"></text>
+<text x="978" y="498.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">Work IQ · 독립적인 협업 시나리오</text>
+<text x="40" y="567.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="22" fill="#000000">학습 연결: 앞 노트북의 답변을 전달하는 것이 아니라, 원본 지식원의 역할을 이해</text>
+<path d="M260,582 l0,32" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M720,582 l0,32" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M1180,582 l0,32" fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="20" y="635" width="1400" height="300" rx="14" fill="none" stroke="#107C10" stroke-width="2"/>
+<text x="40" y="676.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="26" fill="#000000">05 Foundry IQ | 사전 연결된 원본 근거를 조회·결합해 복합 질문에 답한다</text>
+<rect x="40" y="715" width="660" height="190" rx="14" fill="#CFE4FA" stroke="#0078D4" stroke-width="2"/>
+<text x="58" y="757.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">통합 A · 공정 이해·현장 조회</text>
+<text x="58" y="800.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">MES 현장 상태 + 내부 매뉴얼 + Web IQ 공개 자료</text>
+<text x="58" y="827.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">CMP 공정·설비 상태와 점검 기준·공개 원리를 설명</text>
+<text x="58" y="854.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">현장 사실 / 내부 기준 / 외부 설명을 구분</text>
+<text x="58" y="881.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">공정 KB의 답변과 실제 호출·인용을 확인</text>
+<rect x="740" y="715" width="660" height="190" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2"/>
+<text x="758" y="757.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">통합 B · 품질 이슈·후속 조치</text>
+<text x="758" y="800.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">Fabric + 작업지시서 + 인수인계서 + Work IQ</text>
+<text x="758" y="827.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">지정 NCR의 상태·관련 문서·협업 요청을 대조</text>
+<text x="758" y="854.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">운영 상태 / 문서 이력 / 요청·결정을 구분</text>
+<text x="758" y="881.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">품질 KB의 답변과 실제 호출·인용을 확인</text>
+<rect x="40" y="970" width="1360" height="105" rx="14" fill="#DFF6DD" stroke="#107C10" stroke-width="2"/>
+<text x="58" y="1012.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">최종 과제: 통합 답변을 고객 업무 관점에서 검토</text>
+<text x="58" y="1055.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">시나리오별 확인 사실·출처·남은 불확실성·후속 질문 — 로그는 답변 근거를 검증하는 절차</text>
+<text x="40" y="1108.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="18" fill="#000000">두 KB의 자동 병합·최종 출하 승인·설비 조치 실행·모든 확장 질문의 통합 검증을 뜻하지 않습니다.</text>
+</svg>

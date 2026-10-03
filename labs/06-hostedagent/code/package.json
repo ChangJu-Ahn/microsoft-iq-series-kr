@@ -1,0 +1,12 @@
+{
+  "name": "iq-hostedagent-demo-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/vendor-markdown.mjs",
+    "test": "node --test tests/*.mjs"
+  },
+  "dependencies": {
+    "markdown-it": "15.0.2"
+  }
+}

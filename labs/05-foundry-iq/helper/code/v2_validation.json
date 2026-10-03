@@ -1,0 +1,1011 @@
+{
+  "verifiedAtUtc": "2026-09-30T15:12:25.435459+00:00",
+  "endpoint": "https://ai-search-srch-vljt.search.windows.net",
+  "apiVersion": "2026-08-01-preview",
+  "newKnowledgeSources": [
+    "ks-process-mes-v2",
+    "ks-process-webiq-v2",
+    "ks-quality-handovers-v2",
+    "ks-quality-workorders-v2",
+    "ks-quality-manuals-v2",
+    "ks-quality-fabric-v2",
+    "ks-quality-workiq-v2"
+  ],
+  "newKnowledgeBases": [
+    "process-assistance-kb-v2",
+    "quality-investigation-kb-v2"
+  ],
+  "originalDefinitions": [
+    {
+      "collection": "knowledgesources",
+      "name": "ks-azureblob-manual",
+      "unchanged": true
+    },
+    {
+      "collection": "knowledgesources",
+      "name": "ks-fabriciq-factoryagent-v2",
+      "unchanged": true
+    },
+    {
+      "collection": "knowledgesources",
+      "name": "ks-machine-manuals",
+      "unchanged": true
+    },
+    {
+      "collection": "knowledgesources",
+      "name": "ks-searchindex-shifthandovers",
+      "unchanged": true
+    },
+    {
+      "collection": "knowledgesources",
+      "name": "ks-searchindex-workorder",
+      "unchanged": true
+    },
+    {
+      "collection": "knowledgesources",
+      "name": "ks-workiq-changju",
+      "unchanged": true
+    },
+    {
+      "collection": "knowledgebases",
+      "name": "manufacturing-kb",
+      "unchanged": true
+    }
+  ],
+  "blobIngestion": {
+    "status": "success",
+    "itemsProcessed": 9,
+    "itemsFailed": 0
+  },
+  "mesRestComparison": {
+    "restPath": "/api/products",
+    "mcpTool": "list_products",
+    "http": 200,
+    "restCount": 4,
+    "mcpCount": 4,
+    "rowsEqual": true
+  },
+  "tests": [
+    {
+      "case": "mes",
+      "kb": "process-assistance-kb-v2",
+      "http": 200,
+      "elapsedSeconds": 17.0,
+      "evidence": {
+        "ks-process-mes-v2": true
+      },
+      "referenceCount": 3,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "case": "webiq",
+      "kb": "process-assistance-kb-v2",
+      "http": 200,
+      "elapsedSeconds": 19.4,
+      "evidence": {
+        "ks-process-webiq-v2": true
+      },
+      "referenceCount": 3,
+      "errors": [],
+      "passed": true,
+      "webiqQueries": [
+        "chemical mechanical planarization process fundamentals"
+      ]
+    },
+    {
+      "case": "process",
+      "kb": "process-assistance-kb-v2",
+      "http": 200,
+      "elapsedSeconds": 26.4,
+      "evidence": {
+        "ks-process-mes-v2": true,
+        "ks-process-webiq-v2": true
+      },
+      "referenceCount": 6,
+      "errors": [],
+      "passed": true,
+      "webiqQueries": [
+        "chemical mechanical planarization process fundamentals control points slurry pad conditioning defect management"
+      ]
+    },
+    {
+      "case": "handovers",
+      "kb": "quality-investigation-kb-v2",
+      "http": 200,
+      "elapsedSeconds": 19.8,
+      "evidence": {
+        "ks-quality-handovers-v2": true
+      },
+      "referenceCount": 42,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "case": "workorders",
+      "kb": "quality-investigation-kb-v2",
+      "http": 200,
+      "elapsedSeconds": 21.1,
+      "evidence": {
+        "ks-quality-workorders-v2": true
+      },
+      "referenceCount": 26,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "case": "manuals",
+      "kb": "quality-investigation-kb-v2",
+      "http": 200,
+      "elapsedSeconds": 32.3,
+      "evidence": {
+        "ks-quality-manuals-v2": true
+      },
+      "referenceCount": 25,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "case": "fabric",
+      "kb": "quality-investigation-kb-v2",
+      "http": 200,
+      "elapsedSeconds": 151.5,
+      "evidence": {
+        "ks-quality-fabric-v2": true
+      },
+      "referenceCount": 1,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "case": "workiq",
+      "kb": "quality-investigation-kb-v2",
+      "http": 200,
+      "elapsedSeconds": 63.2,
+      "evidence": {
+        "ks-quality-workiq-v2": true
+      },
+      "referenceCount": 1,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "case": "quality",
+      "kb": "quality-investigation-kb-v2",
+      "http": 206,
+      "elapsedSeconds": 155.5,
+      "evidence": {
+        "ks-quality-handovers-v2": true,
+        "ks-quality-workorders-v2": true,
+        "ks-quality-manuals-v2": true,
+        "ks-quality-fabric-v2": false,
+        "ks-quality-workiq-v2": true
+      },
+      "referenceCount": 36,
+      "errors": [
+        {
+          "source": "ks-quality-fabric-v2",
+          "error": {
+            "code": "InvalidAgentRetrievalRequest",
+            "message": "Failed to retrieve Fabric Data Agent due to timeout, 'WorkspaceId: 519a98e5-0ec5-4330-a1d2-2991af13ecb8, DataAgentId: 96e07abb-588d-40d8-8563-45fb771557a5: The request was canceled due to the configured HttpClient.Timeout of 100 seconds elapsing..'"
+          }
+        }
+      ],
+      "passed": false
+    },
+    {
+      "case": "quality-focused",
+      "kb": "quality-investigation-kb-v2",
+      "http": 206,
+      "elapsedSeconds": 136.0,
+      "evidence": {
+        "ks-quality-handovers-v2": true,
+        "ks-quality-workorders-v2": true,
+        "ks-quality-manuals-v2": true,
+        "ks-quality-fabric-v2": false,
+        "ks-quality-workiq-v2": false
+      },
+      "referenceCount": 26,
+      "errors": [
+        {
+          "source": "ks-quality-fabric-v2",
+          "error": {
+            "code": "InvalidAgentRetrievalRequest",
+            "message": "Failed to retrieve Fabric Data Agent due to timeout, 'WorkspaceId: 519a98e5-0ec5-4330-a1d2-2991af13ecb8, DataAgentId: 96e07abb-588d-40d8-8563-45fb771557a5: The request was canceled due to the configured HttpClient.Timeout of 100 seconds elapsing..'"
+          }
+        },
+        {
+          "source": "ks-quality-workiq-v2",
+          "error": {
+            "message": "WorkIQ A2A request has timed out."
+          }
+        }
+      ],
+      "passed": false
+    }
+  ],
+  "repartition": {
+    "verifiedAtUtc": "2026-09-30T15:34:52.454751+00:00",
+    "all13KnowledgeSourcesUnchanged": true,
+    "originalKnowledgeBaseUnchanged": true,
+    "unchangedOtherV2BaseFields": true,
+    "knowledgeBases": {
+      "process-assistance-kb-v2": [
+        "ks-process-mes-v2",
+        "ks-process-webiq-v2",
+        "ks-quality-manuals-v2"
+      ],
+      "quality-investigation-kb-v2": [
+        "ks-quality-handovers-v2",
+        "ks-quality-workorders-v2",
+        "ks-quality-fabric-v2",
+        "ks-quality-workiq-v2"
+      ]
+    },
+    "tests": [
+      {
+        "case": "process-3-sources",
+        "kb": "process-assistance-kb-v2",
+        "question": "MES에서 CMP 공정 경로와 설비 상태를 확인하고, 내부 장비 매뉴얼에서 CMP 압력 관련 표준 점검 절차를 확인하세요. Web IQ에서는 chemical mechanical planarization process fundamentals만 검색해 공정 원리를 설명하세요. 현장 사실, 내부 기준, 외부 공개 설명을 각각 인용과 함께 구분하세요. 내부 식별자·매뉴얼 본문·기준값을 외부 검색에 보내지 마세요.",
+        "http": 200,
+        "elapsedSeconds": 35.3,
+        "evidence": {
+          "ks-process-mes-v2": true,
+          "ks-process-webiq-v2": true,
+          "ks-quality-manuals-v2": true
+        },
+        "referenceCount": 20,
+        "errors": [],
+        "passed": true,
+        "webiqQueries": [
+          "chemical mechanical planarization process fundamentals"
+        ]
+      },
+      {
+        "case": "quality-4-sources",
+        "kb": "quality-investigation-kb-v2",
+        "question": "LOT0004 / EQP-CMP01 / NCR-2026-0009의 후속 조치를 요약하세요. Fabric에서는 해당 NCR 한 건의 현재 상태를 확인하고, 작업지시서와 교대 인수인계서에서는 관련 조치 이력을, Work IQ의 IQ-DEMO-20260922 메일에서는 요청·결정·담당자를 확인하세요. 네 출처를 구분하고 없는 결정은 추측하지 마세요.",
+        "http": 206,
+        "elapsedSeconds": 132.8,
+        "evidence": {
+          "ks-quality-handovers-v2": true,
+          "ks-quality-workorders-v2": true,
+          "ks-quality-fabric-v2": false,
+          "ks-quality-workiq-v2": true
+        },
+        "referenceCount": 29,
+        "errors": [
+          {
+            "source": "ks-quality-fabric-v2",
+            "error": {
+              "code": "InvalidAgentRetrievalRequest",
+              "message": "Failed to retrieve Fabric Data Agent due to timeout, 'WorkspaceId: 519a98e5-0ec5-4330-a1d2-2991af13ecb8, DataAgentId: 96e07abb-588d-40d8-8563-45fb771557a5: The request was canceled due to the configured HttpClient.Timeout of 100 seconds elapsing..'"
+            }
+          }
+        ],
+        "passed": false
+      }
+    ]
+  },
+  "capacityResumeRetests": [
+    {
+      "startedAtUtc": "2026-10-01T00:48:20.037361+00:00",
+      "capacity": "fabriciqv20917",
+      "capacityBefore": {
+        "provisioningState": "Succeeded",
+        "state": "Active"
+      },
+      "tests": [
+        {
+          "case": "fabric-alone-active",
+          "kb": "quality-investigation-kb-v2",
+          "question": "EQP-CMP01에서 처리한 LOT0004의 품질 검사 판정과 NCR을 운영 데이터에서 확인해 주세요. 추정하지 말고 확인된 값과 출처만 답해주세요.",
+          "startedAtUtc": "2026-10-01T00:48:24.015915+00:00",
+          "http": 200,
+          "elapsedSeconds": 159.5,
+          "capacityBefore": {
+            "provisioningState": "Succeeded",
+            "state": "Active"
+          },
+          "capacityAfter": {
+            "provisioningState": "Succeeded",
+            "state": "Active"
+          },
+          "evidence": {
+            "ks-quality-fabric-v2": true
+          },
+          "referenceCount": 1,
+          "errors": [],
+          "passed": true,
+          "sourceActivities": [
+            {
+              "knowledgeSourceName": "ks-quality-fabric-v2",
+              "type": "fabricDataAgent",
+              "count": 1,
+              "startedAt": "2026-10-01T00:50:09.9995649Z",
+              "completedAt": "2026-10-01T00:50:57.6978061Z"
+            }
+          ]
+        },
+        {
+          "case": "quality-4-sources-active",
+          "kb": "quality-investigation-kb-v2",
+          "question": "LOT0004 / EQP-CMP01 / NCR-2026-0009의 후속 조치를 요약하세요. Fabric에서는 해당 NCR 한 건의 현재 상태를 확인하고, 작업지시서와 교대 인수인계서에서는 관련 조치 이력을, Work IQ의 IQ-DEMO-20260922 메일에서는 요청·결정·담당자를 확인하세요. 네 출처를 구분하고 없는 결정은 추측하지 마세요.",
+          "startedAtUtc": "2026-10-01T00:51:05.702738+00:00",
+          "http": 200,
+          "elapsedSeconds": 69.2,
+          "capacityBefore": {
+            "provisioningState": "Succeeded",
+            "state": "Active"
+          },
+          "capacityAfter": {
+            "provisioningState": "Succeeded",
+            "state": "Active"
+          },
+          "evidence": {
+            "ks-quality-handovers-v2": true,
+            "ks-quality-workorders-v2": true,
+            "ks-quality-fabric-v2": true,
+            "ks-quality-workiq-v2": true
+          },
+          "referenceCount": 32,
+          "errors": [],
+          "passed": true,
+          "sourceActivities": [
+            {
+              "knowledgeSourceName": "ks-quality-workorders-v2",
+              "type": "searchIndex",
+              "count": 24,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:12.2055424Z",
+              "completedAt": "2026-10-01T00:51:17.0025274Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-workorders-v2",
+              "type": "searchIndex",
+              "count": 3,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:13.3206178Z",
+              "completedAt": "2026-10-01T00:51:17.0025294Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-workorders-v2",
+              "type": "searchIndex",
+              "count": 13,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:14.2933534Z",
+              "completedAt": "2026-10-01T00:51:17.0025299Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-workorders-v2",
+              "type": "searchIndex",
+              "count": 11,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:15.1228583Z",
+              "completedAt": "2026-10-01T00:51:17.0025306Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-workorders-v2",
+              "type": "searchIndex",
+              "count": 29,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:16.1488098Z",
+              "completedAt": "2026-10-01T00:51:17.0025313Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-handovers-v2",
+              "type": "searchIndex",
+              "count": 44,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:17.0026231Z",
+              "completedAt": "2026-10-01T00:51:21.4173941Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-handovers-v2",
+              "type": "searchIndex",
+              "count": 33,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:17.8731919Z",
+              "completedAt": "2026-10-01T00:51:21.4173962Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-handovers-v2",
+              "type": "searchIndex",
+              "count": 19,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:18.7558781Z",
+              "completedAt": "2026-10-01T00:51:21.4173967Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-handovers-v2",
+              "type": "searchIndex",
+              "count": 27,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:19.7960087Z",
+              "completedAt": "2026-10-01T00:51:21.4173975Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-handovers-v2",
+              "type": "searchIndex",
+              "count": 41,
+              "elapsedMs": 0,
+              "startedAt": "2026-10-01T00:51:20.6258899Z",
+              "completedAt": "2026-10-01T00:51:21.4173981Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-fabric-v2",
+              "type": "fabricDataAgent",
+              "count": 1,
+              "startedAt": "2026-10-01T00:51:12.2053762Z",
+              "completedAt": "2026-10-01T00:51:44.5240793Z"
+            },
+            {
+              "knowledgeSourceName": "ks-quality-workiq-v2",
+              "type": "workIQ",
+              "count": 1,
+              "elapsedMs": 24358,
+              "startedAt": "2026-10-01T00:51:21.417446Z",
+              "completedAt": "2026-10-01T00:51:45.820077Z"
+            }
+          ]
+        }
+      ],
+      "allKsKbDefinitionsUnchanged": true,
+      "capacityAfter": {
+        "provisioningState": "Succeeded",
+        "state": "Active"
+      },
+      "completedAtUtc": "2026-10-01T00:52:16.784843+00:00"
+    }
+  ],
+  "traceParsingTests": [
+    {
+      "verifiedAtUtc": "2026-10-01T01:28:45.926515+00:00",
+      "authentication": "Existing Azure CLI session for validation only; notebook MSAL unchanged",
+      "tests": [
+        {
+          "case": "process",
+          "activityCount": 13,
+          "planningCount": 2,
+          "queryCount": 9,
+          "queries": [
+            {
+              "id": 1,
+              "source": "ks-process-mes-v2",
+              "count": 0,
+              "arguments": {
+                "mcpServerArguments": {
+                  "toolName": "get_process_route",
+                  "toolArguments": {
+                    "stage": "CMP"
+                  }
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 2,
+              "source": "ks-quality-manuals-v2",
+              "count": 49,
+              "arguments": {
+                "azureBlobArguments": {
+                  "search": "CMP 장비 압력 pressure 점검 절차"
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 3,
+              "source": "ks-process-webiq-v2",
+              "count": 3,
+              "arguments": {
+                "mcpServerArguments": {
+                  "toolName": "web",
+                  "toolArguments": {
+                    "query": "chemical mechanical planarization process fundamentals",
+                    "maxResults": 3,
+                    "contentFormat": "passage",
+                    "maxLength": 1500
+                  }
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 4,
+              "source": "ks-process-mes-v2",
+              "count": 1,
+              "arguments": {
+                "mcpServerArguments": {
+                  "toolName": "list_equipments",
+                  "toolArguments": {}
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 5,
+              "source": "ks-quality-manuals-v2",
+              "count": 46,
+              "arguments": {
+                "azureBlobArguments": {
+                  "search": "CMP polisher downforce 압력 표준 점검 절차"
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 6,
+              "source": "ks-quality-manuals-v2",
+              "count": 46,
+              "arguments": {
+                "azureBlobArguments": {
+                  "search": "CMP 헤드 압력(Head pressure) 점검 SOP"
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 8,
+              "source": "ks-process-mes-v2",
+              "count": 1,
+              "arguments": {
+                "mcpServerArguments": {
+                  "toolName": "get_process_route",
+                  "toolArguments": {}
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 9,
+              "source": "ks-process-mes-v2",
+              "count": 1,
+              "arguments": {
+                "mcpServerArguments": {
+                  "toolName": "get_process_route",
+                  "toolArguments": {
+                    "step_code": "CMP"
+                  }
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 10,
+              "source": "ks-process-mes-v2",
+              "count": 1,
+              "arguments": {
+                "mcpServerArguments": {
+                  "toolName": "list_equipments",
+                  "toolArguments": {}
+                }
+              },
+              "warning": null,
+              "error": null
+            }
+          ],
+          "repeatedQueries": [
+            {
+              "source": "ks-process-mes-v2",
+              "previousId": 1,
+              "id": 4,
+              "previousCount": 0,
+              "count": 1,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            },
+            {
+              "source": "ks-quality-manuals-v2",
+              "previousId": 2,
+              "id": 5,
+              "previousCount": 49,
+              "count": 46,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            },
+            {
+              "source": "ks-quality-manuals-v2",
+              "previousId": 5,
+              "id": 6,
+              "previousCount": 46,
+              "count": 46,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            },
+            {
+              "source": "ks-process-mes-v2",
+              "previousId": 4,
+              "id": 8,
+              "previousCount": 1,
+              "count": 1,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            },
+            {
+              "source": "ks-process-mes-v2",
+              "previousId": 8,
+              "id": 9,
+              "previousCount": 1,
+              "count": 1,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            },
+            {
+              "source": "ks-process-mes-v2",
+              "previousId": 9,
+              "id": 10,
+              "previousCount": 1,
+              "count": 1,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            }
+          ],
+          "overlaps": [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              2,
+              5
+            ],
+            [
+              2,
+              6
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              8,
+              9
+            ],
+            [
+              8,
+              10
+            ],
+            [
+              9,
+              10
+            ]
+          ],
+          "referenceCount": 20,
+          "citedReferenceCount": 11,
+          "unresolvedCitations": [],
+          "evidence": {
+            "ks-process-mes-v2": true,
+            "ks-process-webiq-v2": true,
+            "ks-quality-manuals-v2": true
+          },
+          "errors": [],
+          "parserMatchesRawResponse": true,
+          "http": 200,
+          "elapsedSeconds": 34.3
+        },
+        {
+          "case": "quality",
+          "activityCount": 11,
+          "planningCount": 1,
+          "queryCount": 8,
+          "queries": [
+            {
+              "id": 1,
+              "source": "ks-quality-fabric-v2",
+              "count": 1,
+              "arguments": {
+                "fabricDataAgentArguments": {
+                  "search": "LOT0004 / EQP-CMP01 / NCR-2026-0009의 후속 조치를 요약하세요. Fabric에서는 해당 NCR 한 건의 현재 상태를 확인하고, 작업지시서와 교대 인수인계서에서는 관련 조치 이력을, Work IQ의 IQ-DEMO-20260922 메일에서는 요청·결정·담당자를 확인하세요. 네 출처를 구분하고 없는 결정은 추측하지 마세요."
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 2,
+              "source": "ks-quality-workorders-v2",
+              "count": 7,
+              "arguments": {
+                "searchIndexArguments": {
+                  "search": "NCR-2026-0009 작업지시서 후속 조치",
+                  "filter": null,
+                  "semanticConfigurationName": "rag-workorder-semantic-configuration",
+                  "sourceDataFields": [
+                    {
+                      "name": "title"
+                    },
+                    {
+                      "name": "chunk"
+                    },
+                    {
+                      "name": "chunk_id"
+                    }
+                  ],
+                  "searchFields": []
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 3,
+              "source": "ks-quality-workorders-v2",
+              "count": 20,
+              "arguments": {
+                "searchIndexArguments": {
+                  "search": "LOT0004 EQP-CMP01 작업지시 조치 이력",
+                  "filter": null,
+                  "semanticConfigurationName": "rag-workorder-semantic-configuration",
+                  "sourceDataFields": [
+                    {
+                      "name": "title"
+                    },
+                    {
+                      "name": "chunk"
+                    },
+                    {
+                      "name": "chunk_id"
+                    }
+                  ],
+                  "searchFields": []
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 4,
+              "source": "ks-quality-workorders-v2",
+              "count": 37,
+              "arguments": {
+                "searchIndexArguments": {
+                  "search": "EQP-CMP01 LOT0004 NCR-2026-0009 원인 조치 결과",
+                  "filter": null,
+                  "semanticConfigurationName": "rag-workorder-semantic-configuration",
+                  "sourceDataFields": [
+                    {
+                      "name": "title"
+                    },
+                    {
+                      "name": "chunk"
+                    },
+                    {
+                      "name": "chunk_id"
+                    }
+                  ],
+                  "searchFields": []
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 5,
+              "source": "ks-quality-handovers-v2",
+              "count": 26,
+              "arguments": {
+                "searchIndexArguments": {
+                  "search": "NCR-2026-0009 교대 인수인계 후속 요청",
+                  "filter": null,
+                  "semanticConfigurationName": "rag-shifthandovers-semantic-configuration",
+                  "sourceDataFields": [
+                    {
+                      "name": "title"
+                    },
+                    {
+                      "name": "chunk"
+                    },
+                    {
+                      "name": "chunk_id"
+                    }
+                  ],
+                  "searchFields": []
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 6,
+              "source": "ks-quality-handovers-v2",
+              "count": 41,
+              "arguments": {
+                "searchIndexArguments": {
+                  "search": "LOT0004 EQP-CMP01 인수인계 이상 조치",
+                  "filter": null,
+                  "semanticConfigurationName": "rag-shifthandovers-semantic-configuration",
+                  "sourceDataFields": [
+                    {
+                      "name": "title"
+                    },
+                    {
+                      "name": "chunk"
+                    },
+                    {
+                      "name": "chunk_id"
+                    }
+                  ],
+                  "searchFields": []
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 7,
+              "source": "ks-quality-handovers-v2",
+              "count": 22,
+              "arguments": {
+                "searchIndexArguments": {
+                  "search": "EQP-CMP01 CMP01 LOT0004 교대 기록",
+                  "filter": null,
+                  "semanticConfigurationName": "rag-shifthandovers-semantic-configuration",
+                  "sourceDataFields": [
+                    {
+                      "name": "title"
+                    },
+                    {
+                      "name": "chunk"
+                    },
+                    {
+                      "name": "chunk_id"
+                    }
+                  ],
+                  "searchFields": []
+                }
+              },
+              "warning": null,
+              "error": null
+            },
+            {
+              "id": 8,
+              "source": "ks-quality-workiq-v2",
+              "count": 1,
+              "arguments": {
+                "workIQArguments": {
+                  "search": "LOT0004 / EQP-CMP01 / NCR-2026-0009의 후속 조치를 요약하세요. Fabric에서는 해당 NCR 한 건의 현재 상태를 확인하고, 작업지시서와 교대 인수인계서에서는 관련 조치 이력을, Work IQ의 IQ-DEMO-20260922 메일에서는 요청·결정·담당자를 확인하세요. 네 출처를 구분하고 없는 결정은 추측하지 마세요."
+                }
+              },
+              "warning": null,
+              "error": null
+            }
+          ],
+          "repeatedQueries": [
+            {
+              "source": "ks-quality-workorders-v2",
+              "previousId": 2,
+              "id": 3,
+              "previousCount": 7,
+              "count": 20,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            },
+            {
+              "source": "ks-quality-workorders-v2",
+              "previousId": 3,
+              "id": 4,
+              "previousCount": 20,
+              "count": 37,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            },
+            {
+              "source": "ks-quality-handovers-v2",
+              "previousId": 5,
+              "id": 6,
+              "previousCount": 26,
+              "count": 41,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            },
+            {
+              "source": "ks-quality-handovers-v2",
+              "previousId": 6,
+              "id": 7,
+              "previousCount": 41,
+              "count": 22,
+              "argumentsChanged": true,
+              "reason": "재조회 이유는 응답에 명시되지 않음. 동일 소스 호출만으로 재시도·근거 부족을 단정하지 않습니다."
+            }
+          ],
+          "overlaps": [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              1,
+              4
+            ],
+            [
+              1,
+              5
+            ],
+            [
+              1,
+              6
+            ],
+            [
+              1,
+              7
+            ],
+            [
+              1,
+              8
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              2,
+              4
+            ],
+            [
+              3,
+              4
+            ],
+            [
+              5,
+              6
+            ],
+            [
+              5,
+              7
+            ],
+            [
+              6,
+              7
+            ]
+          ],
+          "referenceCount": 28,
+          "citedReferenceCount": 5,
+          "unresolvedCitations": [],
+          "evidence": {
+            "ks-quality-handovers-v2": true,
+            "ks-quality-workorders-v2": true,
+            "ks-quality-fabric-v2": true,
+            "ks-quality-workiq-v2": true
+          },
+          "errors": [],
+          "parserMatchesRawResponse": true,
+          "http": 200,
+          "elapsedSeconds": 221.4
+        }
+      ]
+    }
+  ]
+}

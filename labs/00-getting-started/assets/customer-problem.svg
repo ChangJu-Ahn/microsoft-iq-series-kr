@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title">
+<title id="title">CJ전자: 분산된 업무 근거와 판단의 불확실성</title>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#495057"/></marker></defs>
+<rect width="1440" height="900" fill="#ffffff"/>
+<text x="40" y="57.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="32" fill="#000000">CJ전자 반도체 사업부 | 품질·설비·출하 판단의 근거가 흩어져 있다</text>
+<text x="40" y="107.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="22" fill="#000000">공통 고객의 문제들 — 모든 실습을 하나의 로트·출하 사건에 맞추지 않음</text>
+<rect x="40" y="160" width="310" height="240" rx="14" fill="#CFE4FA" stroke="#0078D4" stroke-width="2"/>
+<text x="58" y="202.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">생산 현장</text>
+<text x="58" y="245.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">어떤 공정·설비에서</text>
+<text x="58" y="272.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">어느 로트를 처리했나?</text>
+<text x="58" y="299.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000"></text>
+<text x="58" y="326.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">로트·공정·설비·시간</text>
+<text x="58" y="353.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">MES</text>
+<rect x="390" y="160" width="310" height="240" rx="14" fill="#CFE4FA" stroke="#0078D4" stroke-width="2"/>
+<text x="408" y="202.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">품질·설비 분석</text>
+<text x="408" y="245.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">어떤 검사·NCR·경보인가?</text>
+<text x="408" y="272.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">어디에 개선이 필요한가?</text>
+<text x="408" y="299.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000"></text>
+<text x="408" y="326.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">품질·센서·처리 기록</text>
+<text x="408" y="353.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">QMS / FDC</text>
+<rect x="740" y="160" width="310" height="240" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2"/>
+<text x="758" y="202.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">협업·조치 기록</text>
+<text x="758" y="245.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">무엇을 요청·기록했나?</text>
+<text x="758" y="272.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">조치·결정은 확인됐나?</text>
+<text x="758" y="299.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000"></text>
+<text x="758" y="326.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">메일·작업·교대 문서</text>
+<text x="758" y="353.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">요청과 완료는 별도</text>
+<rect x="1090" y="160" width="310" height="240" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2"/>
+<text x="1108" y="202.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">기준·공개 지식</text>
+<text x="1108" y="245.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">현장의 점검 기준은?</text>
+<text x="1108" y="272.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">공개 공정 원리는?</text>
+<text x="1108" y="299.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000"></text>
+<text x="1108" y="326.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">내부 장비 매뉴얼</text>
+<text x="1108" y="353.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">외부 공개 자료</text>
+<text x="40" y="466.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="26" fill="#000000">개별 근거만으로 남는 빈틈 → 복합 질문에는 여러 출처의 대조가 필요</text>
+<rect x="40" y="500" width="440" height="155" rx="14" fill="#FFF4CE" stroke="#F7630C" stroke-width="2"/>
+<text x="58" y="542.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">합격 ≠ 조치 완료</text>
+<text x="58" y="585.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">검사 판정·NCR 상태·처리 승인을</text>
+<text x="58" y="612.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">구분하지 않으면 출하 판단이 불명확</text>
+<rect x="500" y="500" width="440" height="155" rx="14" fill="#FFF4CE" stroke="#F7630C" stroke-width="2"/>
+<text x="518" y="542.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">경보 ≠ 불량 원인</text>
+<text x="518" y="585.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">설비·시간·생산·검사의 연결 없이</text>
+<text x="518" y="612.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">원인과 영향 로트를 확정할 수 없음</text>
+<rect x="960" y="500" width="440" height="155" rx="14" fill="#FFF4CE" stroke="#F7630C" stroke-width="2"/>
+<text x="978" y="542.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">요청 ≠ 승인·완료</text>
+<text x="978" y="585.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">협업 요청·문서 이력·운영 상태가</text>
+<text x="978" y="612.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">다르면 추가 확인 업무가 필요</text>
+<rect x="40" y="705" width="1360" height="140" rx="14" fill="#F3F2F1" stroke="#495057" stroke-width="2"/>
+<text x="58" y="747.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">비용 압력: 무엇을 확인하고 줄여야 하는가?</text>
+<text x="58" y="790.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">반복 조사·수작업 대조  /  판단 지연·출하 대기  /  불필요한 점검·재작업  /  반복 불량·폐기 비용</text>
+<text x="58" y="817.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">워크숍은 판단 근거를 연결하고 남은 불확실성을 구체적인 후속 질문으로 바꾼다</text>
+<text x="40" y="868.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="18" fill="#000000">가상 고객의 조사 가설입니다. 실제 사건·증가율·절감액을 가정하지 않습니다.</text>
+</svg>

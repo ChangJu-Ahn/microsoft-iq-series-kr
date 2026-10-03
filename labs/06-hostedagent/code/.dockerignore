@@ -1,0 +1,13 @@
+**
+!Dockerfile
+!requirements-web.txt
+!web.py
+!catalog.py
+!questions.py
+!notebook-questions.json
+!agent/
+!agent/retrieval.py
+!static/
+!static/*.html
+!static/*.css
+!static/*.js
