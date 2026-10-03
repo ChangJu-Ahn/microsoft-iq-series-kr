@@ -4,6 +4,7 @@
 !web.py
 !catalog.py
 !questions.py
+!scenario.py
 !notebook-questions.json
 !agent/
 !agent/retrieval.py
@@ -11,3 +12,7 @@
 !static/*.html
 !static/*.css
 !static/*.js
+!scenario-content/
+!scenario-content/README.md
+!scenario-content/assets/
+!scenario-content/assets/*.svg

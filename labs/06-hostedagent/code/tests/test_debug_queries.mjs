@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import {summarizeQuery, summarizeRepeat, executionPasses, modelTokenCount} from "../static/trace.js";
+import * as trace from "../static/trace.js";
 
 test("normalizes Search, Blob, Fabric and Work IQ searches into the same fields", () => {
   for (const field of ["searchIndexArguments", "azureBlobArguments", "fabricDataAgentArguments", "workIQArguments"]) {
@@ -81,4 +82,40 @@ test("token summary counts explicit model I/O once and leaves absent values unkn
     {type:"agenticReasoning",details:{reasoningTokens:500}}
   ]),350);
   assert.equal(modelTokenCount([{type:"searchIndex",details:{}}]),null);
+});
+
+test("fan-out IDs include overlapping calls to the same or different sources", () => {
+  assert.equal(typeof trace.fanOutActivityIds, "function");
+  const timeline = [
+    {id: 0, source: "mes"},
+    {id: 3, source: "mes"},
+    {id: 8, source: "manual", durationMs: 0},
+    {id: 12, source: "web"}
+  ];
+  assert.deepEqual(
+    [...trace.fanOutActivityIds(timeline, [[0, 3], [3, 8]])],
+    ["0", "3", "8"]
+  );
+});
+
+test("fan-out IDs exclude model-only overlaps and activities absent from the timeline", () => {
+  assert.equal(typeof trace.fanOutActivityIds, "function");
+  const timeline = [
+    {id: 0, type: "modelQueryPlanning"},
+    {id: 1, source: "mes"},
+    {id: 2, type: "modelAnswerSynthesis"}
+  ];
+  assert.deepEqual([...trace.fanOutActivityIds(timeline, [[0, 1], [1, 2], [1, 99]])], []);
+});
+
+test("fan-out IDs rely on observed overlaps, not consecutive IDs or planning membership", () => {
+  assert.equal(typeof trace.fanOutActivityIds, "function");
+  const timeline = [
+    {id: 0, type: "modelQueryPlanning"},
+    {id: 1, source: "mes"},
+    {id: 2, source: "manual"}
+  ];
+  assert.deepEqual([...trace.fanOutActivityIds(timeline, [])], []);
+  assert.deepEqual([...trace.fanOutActivityIds([], [])], []);
+  assert.deepEqual([...trace.fanOutActivityIds(timeline, [["1", "2"]])], ["1", "2"]);
 });

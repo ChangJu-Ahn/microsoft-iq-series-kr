@@ -23,7 +23,7 @@
 
 이 랩은 외부 근거 확보를 다루며, 내부 로트·설비 상태나 검사 판정·승인 여부를 확인하지 않습니다. 별도 LLM이 최종 답변을 생성하거나 도구를 자동 선택하는 예제도 아닙니다.
 
-[05 Foundry IQ](../05-foundry-iq/README.md)의 공정 KB에서는 Web IQ의 공개 CMP 원리를 MES 현장 사실·내부 매뉴얼과 함께 조회합니다. 여기서 배운 출처 구분이 통합 답변을 검토하는 기준이 됩니다. 앞 노트북의 검색 결과를 업로드하는 것이 아니라 자신의 Web IQ KS로 새로 조회합니다.
+[05 Foundry IQ](../05-foundry-iq/README.md)의 공정 KB에서는 LOT0012의 MES 상태를 확인하고, 이슈가 있을 때 내부 매뉴얼과 공개 기술 자료·유사 사례를 함께 조사합니다. Web IQ 검색어는 확인된 공정·문제를 공개 기술 용어로 바꾸어 구성하며 CMP로 고정하지 않습니다. 여기서 배운 출처 구분이 통합 답변을 검토하는 기준이 됩니다. 앞 노트북의 검색 결과를 업로드하는 것이 아니라 자신의 Web IQ KS로 새로 조회합니다.
 
 ## 참고: Web IQ가 제공하는 외부 근거
 
@@ -56,7 +56,8 @@ Playground의 **Vertical**은 조회할 정보의 종류 또는 기능을 선택
 | --- | --- |
 | **Commerce** | 상거래 영역의 명칭으로 표시된 BETA 항목. 공식 소개에도 commerce 범위가 언급되지만, 공개 API 문서에서 상세 호출 규격은 확인되지 않음 |
 | **Finance · Places · Sports** | 각각 금융·장소·스포츠 영역의 명칭으로 표시된 BETA 항목. 실제 데이터 범위·최신성·호출 규격은 계정에 제공된 문서로 별도 확인 필요 |
-| **Auto · Sonic · AutoSuggest** | 화면에 노출된 BETA 항목. 확인한 공개 문서만으로 기능과 호출 규격을 확정할 수 없어 이름만으로 동작을 단정하지 않음 |
+| **Auto** | [공식 문서 목록](https://webiq.microsoft.ai/llms.txt)에 Auto (Beta) REST API와 해당 기능이 허용된 프로필 조건이 안내됨. 이 실습에서는 호출하지 않음 |
+| **Sonic · AutoSuggest** | 화면에 노출된 BETA 항목. 확인한 공개 문서만으로 기능과 호출 규격을 확정할 수 없어 이름만으로 동작을 단정하지 않음 |
 
 `Public APIs`는 화면의 분류이지 누구나 승인 없이 사용할 수 있다는 뜻은 아닙니다. 또한 메뉴에 보인다는 것만으로 해당 계정의 호출 권한을 보장하지 않습니다. **이 핸즈온에서는 실제 호출을 검증한 Web·Images·Videos에 집중**합니다.
 
@@ -80,11 +81,11 @@ Microsoft Foundry와 Microsoft Copilot을 **웹·이미지·YouTube 동영상**�
 | 진행자 | Web IQ 접근 승인 계정, 고객 실습·키 제공 허용 확인, `web`·`images`·`videos` 서비스 권한, 전체 참가자 호출량에 맞는 할당량 |
 | 로컬 재실행 | Python 3.11 이상, VS Code Python·Jupyter 확장 또는 Jupyter, 인터넷 연결 |
 
-포털의 **Usage**와 계정에 적용되는 [요금 안내](https://webiq.microsoft.ai/documentation/pricing/)를 먼저 확인합니다. 무료 사용이나 공통 할당량을 가정하지 않습니다. 진행자 Playground 조회 6회, 참가자당 REST 6회·MCP 6회를 사용합니다. 20명이 각 노트북을 한 번씩 실행하면 참가자 검색은 총 240회이며 재실행과 05의 Web IQ 하위 조회는 별도입니다. 여러 키를 발급해도 계정 할당량이 늘어난다고 가정하지 않습니다. 이 랩 자체는 별도 LLM 호출이나 Azure 리소스 배포가 필요하지 않습니다.
+포털의 **Usage**와 해당 계정에 적용되는 계약·요금 조건을 진행자가 먼저 확인합니다. 무료 사용이나 공통 할당량을 가정하지 않습니다. 진행자 Playground 조회 6회, 참가자당 REST 6회·MCP 6회를 사용합니다. 20명이 각 노트북을 한 번씩 실행하면 참가자 검색은 총 240회이며 재실행과 05의 Web IQ 하위 조회는 별도입니다. 여러 키를 발급해도 계정 할당량이 늘어난다고 가정하지 않습니다. 이 랩 자체는 별도 LLM 호출이나 Azure 리소스 배포가 필요하지 않습니다.
 
 ## 1. Playground 시연
 
-1. [Web IQ 포털](https://webiq.microsoft.ai/documentation/overview/)에 승인된 계정으로 로그인합니다.
+1. [Web IQ Playground](https://webiq.microsoft.ai/playground/)에 승인된 계정으로 로그인합니다.
 2. **Playground**에서 사용할 **API Key**를 선택합니다.
 3. **Vertical**과 **Search Query**를 아래 표대로 지정하고 **Run Request**를 누릅니다.
 4. **Response**를 확인합니다. 이번 확인에서는 Web에 `JSON`·`Preview`가 있고 Images·Videos에는 `JSON`만 표시됐습니다.
@@ -151,7 +152,7 @@ Tool Finder 채널의 `The New Microsoft Copilot Is Here: Everything You Need to
 
 [REST API 노트북 열기](01_rest_api.ipynb)
 
-1. 저장소 루트의 기존 Python 가상환경을 커널로 선택합니다. Web IQ 하위에 별도 가상환경을 만들 필요는 없습니다.
+1. Python 3.11 이상의 환경을 커널로 선택합니다. 기존 환경이 있으면 재사용하며, 로컬 가상환경은 Git에 포함되지 않으므로 새로 복제한 저장소에 자동으로 제공되지는 않습니다.
 2. 노트북 2번 셀로 `httpx`를 설치합니다.
 3. 3번 셀의 숨김 입력에 키를 넣습니다. 미리 설정한 `WEBIQ_API_KEY` 환경 변수도 사용할 수 있습니다. 환경 변수 방식은 커널 시작 전에 설정해야 합니다.
 4. 4번 셀을 실행해 두 검색어 × 세 카테고리를 조회합니다. 각 요청의 HTTP 상태, 결과 건수, 제목·출처·짧은 발췌가 출력됩니다.
@@ -202,7 +203,11 @@ REST와 같은 매개변수 및 결과 필드를 사용합니다. MCP 결과의 
 
 **데모 키는 자동 폐기하지 않았습니다.** 05의 통합 실습까지 끝난 뒤 진행자가 Profile Management에서 해당 행사 키만 폐기하고, 참가자는 로컬 환경 변수·노트북 세션과 자신의 KS에 남은 키 설정을 정리합니다. 공동 키 폐기는 그 키를 쓰는 모든 참가자의 호출을 중단시킵니다. 기존 기본 키나 다른 작업의 키는 삭제·회전하지 않습니다. 보안 정책에 따라 일시적으로 허용한 Edge의 **Allow JavaScript from Apple Events**도 자동화가 끝나면 해제합니다.
 
+노트북 끝의 키 폐기 안내는 **해당 키를 사용하는 모든 실습을 마친 시점**에 적용합니다. 같은 키로 05를 이어서 진행한다면 03 종료 직후에는 폐기하지 않습니다.
+
 ## 참고 문서
+
+세부 문서 주소에서 소개 페이지만 보이면 승인 계정의 포털 접근 상태와 [공식 문서 목록](https://webiq.microsoft.ai/llms.txt)을 확인합니다. URL의 HTTP 200만으로 세부 규격을 읽었다고 판단하지 않습니다.
 
 - [Web IQ Overview](https://webiq.microsoft.ai/documentation/overview/)
 - [인증과 API 키](https://webiq.microsoft.ai/documentation/authentication/)

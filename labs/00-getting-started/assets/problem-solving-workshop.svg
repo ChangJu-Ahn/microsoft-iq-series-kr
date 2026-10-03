@@ -40,7 +40,7 @@
 <rect x="40" y="715" width="660" height="190" rx="14" fill="#CFE4FA" stroke="#0078D4" stroke-width="2"/>
 <text x="58" y="757.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="24" fill="#000000">통합 A · 공정 이해·현장 조회</text>
 <text x="58" y="800.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">MES 현장 상태 + 내부 매뉴얼 + Web IQ 공개 자료</text>
-<text x="58" y="827.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">CMP 공정·설비 상태와 점검 기준·공개 원리를 설명</text>
+<text x="58" y="827.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">LOT0012 상태·직전 공정 설비·매뉴얼·공개 사례</text>
 <text x="58" y="854.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">현장 사실 / 내부 기준 / 외부 설명을 구분</text>
 <text x="58" y="881.0" font-family="Apple SD Gothic Neo, Malgun Gothic, sans-serif" font-size="20" fill="#000000">공정 KB의 답변과 실제 호출·인용을 확인</text>
 <rect x="740" y="715" width="660" height="190" rx="14" fill="#E8DAEF" stroke="#5C2D91" stroke-width="2"/>

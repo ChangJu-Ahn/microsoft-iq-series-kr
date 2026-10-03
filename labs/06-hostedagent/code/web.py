@@ -20,6 +20,7 @@ from typing import Literal
 from questions import load_questions
 from agent.retrieval import ReasoningEffort
 from catalog import fetch_catalog
+from scenario import content_directory, DIAGRAMS
 
 ROOT = Path(__file__).resolve().parent
 load_dotenv(ROOT / ".env")
@@ -63,6 +64,31 @@ app.mount("/static", StaticFiles(directory=ROOT / "static"), name="static")
 @app.get("/healthz")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/scenario")
+async def scenario_page():
+    return FileResponse(ROOT / "static/scenario.html")
+
+
+@app.get("/scenario/content")
+async def scenario_content():
+    path = content_directory() / "README.md"
+    if not path.is_file():
+        logger.error("scenario_readme_missing")
+        raise HTTPException(503, "시나리오 원본 문서가 없습니다. 배포 파일을 확인하세요.")
+    return FileResponse(path, media_type="text/plain")
+
+
+@app.get("/scenario/assets/{name}")
+async def scenario_diagram(name: str):
+    if name not in DIAGRAMS:
+        raise HTTPException(404, "시나리오 도식을 찾을 수 없습니다.")
+    path = content_directory() / "assets" / name
+    if not path.is_file():
+        logger.error("scenario_diagram_missing name=%s", name)
+        raise HTTPException(503, "시나리오 도식이 없습니다. 배포 파일을 확인하세요.")
+    return FileResponse(path, media_type="image/svg+xml")
 
 
 def backend_credential():

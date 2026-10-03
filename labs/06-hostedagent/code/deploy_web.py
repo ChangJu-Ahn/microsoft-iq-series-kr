@@ -16,6 +16,7 @@ from dotenv import dotenv_values
 import httpx
 
 from questions import load_questions
+from scenario import SOURCE_DIR as SCENARIO_SOURCE, DIAGRAMS
 
 ROOT = Path(__file__).resolve().parent
 RESOURCE_GROUP = "rg-microsoft-iq-series"
@@ -42,7 +43,7 @@ def wait_for_revision(read_state, expected_image: str) -> str:
 
 
 def build_context(target: Path) -> str:
-    files = ["Dockerfile", ".dockerignore", "requirements-web.txt", "web.py", "catalog.py", "questions.py",
+    files = ["Dockerfile", ".dockerignore", "requirements-web.txt", "web.py", "catalog.py", "questions.py", "scenario.py",
              "agent/retrieval.py"]
     files += [str(path.relative_to(ROOT)) for path in sorted((ROOT / "static").iterdir())
               if path.suffix in {".html", ".css", ".js"}]
@@ -52,6 +53,11 @@ def build_context(target: Path) -> str:
         shutil.copyfile(ROOT / filename, destination)
     (target / "notebook-questions.json").write_text(
         json.dumps(load_questions(), ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    scenario_dir = target / "scenario-content"
+    (scenario_dir / "assets").mkdir(parents=True)
+    shutil.copyfile(SCENARIO_SOURCE / "README.md", scenario_dir / "README.md")
+    for name in DIAGRAMS:
+        shutil.copyfile(SCENARIO_SOURCE / "assets" / name, scenario_dir / "assets" / name)
     digest = hashlib.sha256()
     for path in sorted(target.rglob("*")):
         if path.is_file():
@@ -186,6 +192,15 @@ def main(skip_entra_update: bool = False):
                     response.raise_for_status()
                     if response.content != asset.read_bytes():
                         raise RuntimeError(f"배포된 정적 파일이 빌드 context와 다릅니다: {asset.name}")
+                scenario_files = [("/scenario/content", context / "scenario-content/README.md")]
+                scenario_files += [(f"/scenario/assets/{name}", context / "scenario-content/assets" / name)
+                                   for name in DIAGRAMS]
+                for route, source in scenario_files:
+                    response = client.get(web["url"] + route)
+                    response.raise_for_status()
+                    if response.content != source.read_bytes():
+                        raise RuntimeError(f"배포된 시나리오가 원본과 다릅니다: {route}")
+            record["scenario_content_verified"] = True
             record["static_assets_verified"] = True
             record["status"] = "deployed"
             record["health_http_status"] = response.status_code

@@ -73,6 +73,18 @@ class RetrievalTraceTests(unittest.TestCase):
         self.assertEqual(trace["timeline"][0]["type"], "futureActivity")
         self.assertIn("미제공", self.module.format_trace(self.module.parse_trace({})))
 
+    def test_overlap_requires_shared_time_not_touching_intervals_or_elapsed_ms(self):
+        trace = self.module.parse_trace({"activity": [
+            {"id": 1, "type": "mcpServer", "knowledgeSourceName": "mes",
+             "startedAt": "2026-10-01T00:00:01Z", "completedAt": "2026-10-01T00:00:03Z"},
+            {"id": 2, "type": "azureBlob", "knowledgeSourceName": "manual", "elapsedMs": 0,
+             "startedAt": "2026-10-01T00:00:02Z", "completedAt": "2026-10-01T00:00:03Z"},
+            {"id": 3, "type": "mcpServer", "knowledgeSourceName": "mes",
+             "startedAt": "2026-10-01T00:00:03Z", "completedAt": "2026-10-01T00:00:04Z"},
+            {"id": 4, "type": "mcpServer", "knowledgeSourceName": "web", "elapsedMs": 100},
+        ]})
+        self.assertEqual(trace["overlaps"], [[1, 2]])
+
     def test_missing_reference_targets_and_unused_references(self):
         trace = self.module.parse_trace({
             "references": [{"id": "1", "activitySource": 99}],

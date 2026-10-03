@@ -1,8 +1,12 @@
 # Microsoft IQ Series 한국어 실습
 
+> **[Foundry IQ · Hosted Agent 데모 열기 ↗](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io/)** · **[CJ 전자 시나리오 먼저 보기 ↗](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io/scenario)**
+>
+> 완성된 서비스 흐름을 확인하는 발표자용 참고 데모입니다. 시나리오는 로그인 없이 볼 수 있으며, 질문하려면 원본 데이터 접근 권한이 있는 워크숍 계정으로 Entra ID 로그인이 필요합니다. 참가자 실습은 05 Foundry IQ의 API 테스트까지입니다.
+
 가상 고객 **CJ전자 반도체 사업부**의 품질·설비·출하 판단 문제를 다루는 한국어 FDE 워크숍입니다. 제품 기능 나열이 아니라 고객의 질문을 정의하고, 기술로 근거를 확보해 해결 범위와 남은 불확실성을 검증합니다.
 
-반도체 제조 시나리오의 MES(생산)·QMS(품질)·FDC(설비 센서) 데이터를 사용합니다. **01은 공통 업무 이해, 02~04는 독립적인 업무 시나리오, 05는 여러 원본 지식원을 조회·결합하는 두 통합 시나리오**입니다. 앞 노트북의 답변을 다음 노트북으로 전달하는 구조는 아닙니다.
+반도체 제조 시나리오의 MES(생산)·QMS(품질)·FDC(설비 센서) 데이터를 사용합니다. **01은 공통 업무 이해, 02~04는 독립적인 업무 시나리오, 05는 공정·품질 두 Knowledge Base에서 여러 원본 지식원을 조회·결합하는 통합 실습**입니다. 앞 노트북의 답변을 다음 노트북으로 전달하는 구조는 아닙니다.
 
 ## 시작하기
 
@@ -36,7 +40,6 @@ MicrosoftIQSeries-KR/
 |-- .github/
 |   |-- copilot-instructions.md  # 레포 공통 지침
 |   `-- instructions/           # 실습 코드 및 문서별 지침
-|-- docs/                       # 공통 문서
 |-- labs/
 |   |-- 00-getting-started/      # 고객 문제와 워크숍 흐름
 |   |-- 01-inhouse-system/      # 사내 제조 시스템과 데이터 설명
@@ -46,12 +49,7 @@ MicrosoftIQSeries-KR/
 |   |-- 03-web-iq/             # Microsoft Web IQ 개별 실습
 |   |-- 04-work-iq/            # Work IQ 개별 실습
 |   |-- 05-foundry-iq/         # 앞선 IQ들을 연결하는 Foundry IQ 데모
-|   |-- 06-hostedagent/        # 발표자용 Hosted Agent 웹 데모 (참가자 실습 아님)
-|   `-- 06-capstone/           # 기존 통합 확장 폴더
-|-- datasets/                   # 실습 데이터
-|-- logs/                       # 실행 및 검증 기록
-|-- shared/
-|   `-- contracts/              # 통합 시 사용하는 입출력 규약
+|   `-- 06-hostedagent/        # 발표자용 Hosted Agent 웹 데모 (참가자 실습 아님)
 `-- assets/                     # 문서용 이미지와 다이어그램
 ```
 
@@ -59,9 +57,10 @@ MicrosoftIQSeries-KR/
 
 - 폴더명은 영문으로, 실습 설명은 한국어로 작성합니다.
 - 각 실습의 안내는 해당 폴더의 README에 작성하고, 코드와 설정은 해당 실습 폴더에 둡니다. Fabric 실습은 현재 `helper-new`를 사용합니다.
-- 공통 문서는 `docs/`, 실습 데이터는 `datasets/`, 여러 실습에서 재사용하는 코드는 `shared/`에 둡니다.
-- 문서용 이미지는 `assets/`에 둡니다.
-- 실행·검증 결과는 해당 실습 안내와 `logs/`에 기록하며, 자료 제공 여부와 전체 기능의 검증 완료 여부를 구분합니다.
+- 현재 실행 절차와 검증 범위는 각 랩 README를 따릅니다. 로컬 계획·작업 기록은 공개 실습 자료에 포함하지 않습니다.
+- 실습 데이터는 각 랩이 안내하는 원본·노트북·데이터 폴더를 사용합니다.
+- 문서용 이미지는 루트 또는 해당 랩의 `assets/`에 둡니다.
+- 실행·검증의 확인 범위와 한계는 해당 실습 안내에 기록합니다. 상세 실행 로그는 각 실습의 로컬 폴더에 보관하고 Git에서 제외합니다.
 
 ## Copilot 커스텀 지침
 

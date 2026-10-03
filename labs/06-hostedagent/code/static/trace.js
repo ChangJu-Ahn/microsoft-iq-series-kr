@@ -76,6 +76,13 @@ export function modelTokenCount(timeline) {
   return counts.length ? counts.reduce((total, value) => total + value, 0) : null;
 }
 
+export function fanOutActivityIds(timeline, overlaps) {
+  const sourceIds = new Set(timeline.filter(row => row.source && row.id != null).map(row => String(row.id)));
+  return new Set(overlaps
+    .filter(pair => pair.every(id => sourceIds.has(String(id))))
+    .flat().map(String));
+}
+
 function queryBody(row) {
   const body = node("div", undefined, "query-body");
   body.append(node("p", row.query, "query-text"));
@@ -156,6 +163,8 @@ export function renderTrace(container, trace) {
   container.append(metrics);
   container.append(node("p", "Foundry IQ의 관찰 가능한 실행 기록입니다. 내부 추론 전문이 아닙니다. 계획 패스 수 ≠ 재검색 횟수이며, 동일 소스의 추가 호출에는 병렬 하위 검색도 포함됩니다. 응답에 없는 재조회 이유는 추측하지 않습니다.", "small"));
   container.append(node("h3", "1. 실행 타임라인"));
+  container.append(node("p", "fan-out은 다른 조회와 시작·종료 구간이 겹친 활동에 표시합니다. 응답 시각 기준 관찰값이며, ID는 순차 실행 번호가 아닙니다. 배지가 없어도 직렬 실행을 뜻하지는 않습니다.", "small"));
+  const fanOutIds = fanOutActivityIds(trace.timeline, trace.overlaps);
   const wrapper = node("div", undefined, "table-scroll");
   const table = node("table");
   const header = node("tr");
@@ -166,7 +175,14 @@ export function renderTrace(container, trace) {
   const body = node("tbody");
   for (const row of trace.timeline) {
     const line = node("tr");
-    for (const value of [row.id, `${row.type}\n${row.source || "모델/계획 활동"}`,
+    const idCell = node("td", row.id, "timeline-id");
+    if (fanOutIds.has(String(row.id))) {
+      const badge = node("span", "fan-out", "fan-out-badge");
+      badge.title = "다른 조회 활동과 시작·종료 구간이 겹칩니다. 응답 시각 기준 병렬 실행 관찰값이며 서버의 fan-out 그룹 ID가 아닙니다.";
+      idCell.append(badge);
+    }
+    line.append(idCell);
+    for (const value of [`${row.type}\n${row.source || "모델/계획 활동"}`,
       row.durationMs == null ? "미제공" : `${row.durationMs} ms`, row.count ?? "미제공"]) {
       line.append(node("td", value));
     }

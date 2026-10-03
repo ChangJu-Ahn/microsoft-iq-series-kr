@@ -6,7 +6,9 @@
 
 **[배포된 웹 데모 열기](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io)**
 
-웹에는 Entra ID 로그인이 필요합니다. **품질 질문을 실행하기 전에는 `fabriciqv20917` 용량을 Active로 재개**해야 합니다. 이전 검증 후 비용 방지를 위해 Paused로 복원했습니다.
+상단의 **CJ 전자 시나리오**에서 고객 배경을 먼저 읽고 질문을 시작할 수 있습니다. [시나리오 페이지](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io/scenario)는 로그인 없이 열리며, **GitHub 레포** 링크로 원본 실습 자료에 이동할 수 있습니다.
+
+질문 실행·질문 목록·KB 설명 조회에는 Entra ID 로그인이 필요합니다. 시작 화면과 공개 시나리오 읽기에는 필요하지 않습니다. **품질 질문을 실행하기 전에는 `fabriciqv20917` 용량을 확인하고, Paused이면 Active로 재개**해야 합니다. 이전 검증 후 비용 방지를 위해 Paused로 복원했으며, 이 문서 점검에서 현재 용량을 다시 조회하지는 않았습니다.
 
 ## 1. 무엇을 보여주는 데모인가
 
@@ -17,7 +19,7 @@
 - 선택한 Knowledge Base(KB)와 연결된 Knowledge Source(KS)의 역할을 설명으로 확인합니다.
 - 상단 연결도에서 Entra 인증·웹·Foundry Hosted Agent·Foundry IQ와 각 지식원의 데이터 역할을 확인합니다. 선택한 KB만 강조하며 실제 호출 완료를 뜻하지는 않습니다.
 
-이 구현은 **실제 Microsoft Foundry Hosted Agent**입니다. 일반 API 서버에 Agent라는 이름만 붙이거나 Prompt Agent로 대체하지 않았습니다. 두 KB를 자동 결합하거나 원인 확정·출하 승인·업무 조치를 실행하지는 않습니다.
+이 구현은 **커스텀 코드 기반 Microsoft Foundry Hosted Agent**입니다. `azure-ai-agentserver-invocations`의 `InvocationAgentServerHost`를 사용하며 **Microsoft Agent Framework(MAF) 구현이 아닙니다.** 로컬 배포 기록에는 `iq-workshop-demo` **버전 5**의 `active` 전환과 업로드·다운로드 ZIP 해시 일치가 남아 있습니다. 일반 API 서버에 Agent라는 이름만 붙이거나 Prompt Agent로 대체하지 않았습니다. 두 KB를 자동 결합하거나 원인 확정·출하 승인·업무 조치를 실행하지는 않습니다.
 
 ## 2. 아키텍처와 실행 흐름
 
@@ -36,7 +38,7 @@
 ```
 
 1. 웹에서 로그인한 사용자의 Search·Work IQ 위임 토큰을 취득합니다.
-2. KB·질문·추론 강도를 Hosted Agent에 보내고, 토큰은 질문과 분리된 전용 헤더로 전달합니다.
+2. 웹의 서비스 호출 자격 증명(클라우드 Managed Identity / 로컬 Azure CLI)으로 Hosted Agent에 인증합니다. KB·질문·추론 강도를 보내고, 로그인 사용자의 위임 토큰은 질문과 분리된 전용 헤더로 전달합니다.
 3. Agent가 기존 KB를 조회합니다. **KB retrieve 자체는 비스트리밍**이며 계획·검색·답변 합성이 끝난 응답을 받습니다.
 4. 같은 응답에서 소스별 근거 상태와 디버그 정보를 파싱합니다. 이를 위해 추가 모델/검색을 호출하지 않습니다.
 5. 별도 모델 호출이 KB 답변의 사실·인용을 바탕으로 최종 답변을 **실제 토큰 스트리밍**합니다. 완성된 답변을 잘라 보내는 방식이 아닙니다.
@@ -55,6 +57,7 @@
     ├── web.py                 # Entra 로그인·세션·SSE 중계
     ├── catalog.py             # 실제 KB·KS 설명 조회
     ├── questions.py           # 05 노트북의 질문 추출
+    ├── scenario.py            # 00 고객 브리프·기존 도식의 로컬/컨테이너 경로
     ├── setup_identity.py      # 전용 웹 앱 등록
     ├── deploy.py              # Foundry Hosted Agent 배포
     ├── deploy_web.py          # Container Apps 웹 배포
@@ -91,13 +94,24 @@ GitHub 업로드 전 저장소 루트에서 `git add --dry-run labs/06-hostedage
 | [static/markdown.js](code/static/markdown.js), [scripts/vendor-markdown.mjs](code/scripts/vendor-markdown.mjs) | 안전한 Markdown 렌더링과 오프라인 브라우저 라이브러리 생성 |
 | [static/references.js](code/static/references.js) | 출처 이름·실제 reference 연결·인용 근거 카드·안전한 원문 링크 |
 | [static/question-picker.js](code/static/question-picker.js) | 모든 05 실습 질문의 팝업 목록, Knowledge Base 연결, 직접 입력 구분 |
+| [static/scenario.html](code/static/scenario.html), [static/scenario-render.js](code/static/scenario-render.js), [scenario.py](code/scenario.py) | 00 README 기반 공개 시나리오 페이지, 목차·도식·원본 링크 |
 | [questions.py](code/questions.py) | 원본 노트북을 실행하지 않고 AST로 질문 추출 |
 | [deploy.py](code/deploy.py), [deploy_web.py](code/deploy_web.py), [infra/](code/infra/) | Agent 배포와 웹 배포의 차이, 패키징·권한·리소스 정의 |
 | [evaluate.py](code/evaluate.py), [tests/](code/tests/) | 실제 질문 회귀와 로컬 자동 검증 |
 
-의존하는 원본은 [05 노트북](../05-foundry-iq/kb_retrieve_test.ipynb)과 [기존 trace 파서](../05-foundry-iq/helper/code/retrieval_trace.py)입니다. 이 폴더를 단독 복사하기보다 저장소 구조를 유지하세요. Agent 배포 ZIP에는 파서를 포함하고, 웹 이미지에는 노트북에서 추출한 질문 JSON만 포함합니다.
+의존하는 원본은 [05 노트북](../05-foundry-iq/kb_retrieve_test.ipynb), [기존 trace 파서](../05-foundry-iq/helper/code/retrieval_trace.py), [00 고객 브리프](../00-getting-started/README.md)와 [도식](../00-getting-started/assets/)입니다. 이 폴더를 단독 복사하기보다 저장소 구조를 유지하세요. Agent 배포 ZIP에는 파서를 포함하고, 웹 이미지에는 추출한 질문 JSON과 공개 시나리오 README·SVG 도식 2개를 포함합니다.
 
 ## 4. 화면 사용법
+
+### CJ 전자 시나리오
+
+상단의 **CJ 전자 시나리오** 링크는 별도 페이지를 새 탭으로 열어 현재 작성 중인 질문을 유지합니다. 00 README의 고객 상황·페인포인트·실습 흐름·완료 기준·주의사항을 생략하지 않고 HTML로 표시합니다.
+
+- 목차에서 원하는 절로 이동하고, 기존 SVG 도식 2개는 클릭해 크게 볼 수 있습니다.
+- 원문 Markdown의 상대 문서 링크는 GitHub의 해당 파일로 연결합니다.
+- **질문하러 가기** 버튼으로 웹의 질문 화면에 돌아옵니다.
+- 시나리오 문서 읽기에는 로그인이 필요 없으며, 모델·Knowledge Base 조회는 실행하지 않습니다.
+- 문서의 사실·시나리오를 별도로 복제하지 않습니다. 00 README를 변경한 뒤 웹을 재배포하면 본문과 도식에 반영됩니다. 실제 실행 질문은 05 질문 팝업을 기준으로 합니다.
 
 ### 질문·답변과 모드 비교
 
@@ -109,13 +123,15 @@ GitHub 업로드 전 저장소 루트에서 `git add --dry-run labs/06-hostedage
 
 목록은 [05 노트북](../05-foundry-iq/kb_retrieve_test.ipynb)의 실제 조회 질문 전부를 사용합니다. 같은 Knowledge Base에 질문이 추가되어도 첫 질문만 남기지 않습니다. 팝업에서는 긴 문장을 줄이지 않고 전문을 표시하며, 선택 후 입력란에도 같은 원문을 넣습니다.
 
+현재 소스에서 추출되는 목록은 **공정 2개·품질 2개, 총 4개**입니다. LOT0012 조건부 조사, 제품창고 로트·수량 비교, 지정 NCR 후속 조치, 메일에서 시작하는 품질·센서·작업·인계 조사 순서입니다. [05의 전체 호출 목록](../05-foundry-iq/README.md#현재-노트북의-전체-호출-목록)에 원문과 상태를 기록했습니다. 특히 공정 두 번째 질문은 **`찾은 뒤`에서 끝나는 작성 중 문장**입니다. 팝업은 이를 임의로 완성하거나 검증 완료 질문으로 선별하지 않으므로 실행 전 수정·도구 범위 확인이 필요합니다.
+
 팝업을 열거나 질문을 선택하는 것만으로 채팅·모델 호출을 실행하지 않습니다. 선택한 질문을 편집하면 직접 입력으로 표시합니다. Knowledge Base를 직접 변경할 때 실습 질문을 선택 중이면 해당 KB의 첫 질문으로 맞추고, 직접 작성 중인 내용은 유지합니다. 질문 목록 조회가 실패해도 직접 입력은 사용할 수 있습니다.
 
 공정 KB의 기본 질문은 [05 노트북](../05-foundry-iq/kb_retrieve_test.ipynb)에 있는 다음 문장을 그대로 사용합니다.
 
 > MES에서 LOT0012 로트 상태를 확인하고, 현재 진행 중인 공정에서 이슈가 있는지 확인해보자. 만약 이슈가 있다면, 바로 직전 공정의 설비를 확인해서 해당 설비를 내부 장비 문서를 통해서 어떤 이슈가 있을법한지 검토해 보고, 이 이슈 사항이 웹 상에서 다른 회사에서도 문제가 발생했는지 퍼블릭하게 확인해서 전체적인 요약본을 제공해
 
-사용자가 상세 절차·안전 지침을 질문마다 반복해서 입력하는 방식이 아닙니다. 기존 KB 지침·Agent 처리가 이력 연결, 가설과 확인 사실 구분, 내부 정보의 외부 검색 제외를 담당해야 합니다. 질문을 수정할 때는 노트북을 변경하고 웹을 재배포하면 패키징되는 질문 JSON도 함께 갱신됩니다.
+사용자가 상세 절차·안전 지침을 질문마다 반복해서 입력하는 방식이 아닙니다. KB 지침에는 소스 역할·공개 검색 제한이 있고, Agent의 최종 모델 지침에는 확인 사실·미확인 구분과 인용 유지가 있습니다. **직전 공정 추적을 강제하는 코드나 외부 검색어 보안 필터는 아닙니다.** 실제 이력 연결과 공개 가능한 검색어인지는 반환 로그로 확인해야 합니다. 질문을 수정할 때는 노트북을 변경하고 웹을 재배포하면 패키징되는 질문 JSON도 함께 갱신됩니다. 이 작업이 원격 KB 지침을 변경하는 것은 아닙니다.
 
 답변은 스트리밍 중에도 누적 Markdown을 화면 프레임 단위로 렌더링합니다. 생성 중 아직 닫히지 않은 서식은 후속 토큰이 오면 완성됩니다. 중지·실패 시에는 그때까지 받은 답변을 남기고 미완료 상태를 표시합니다.
 
@@ -153,6 +169,7 @@ GitHub 업로드 전 저장소 루트에서 `git add --dry-run labs/06-hostedage
 
 - **요청/API 보고 강도:** 요청한 모드와 `agenticReasoning.retrievalReasoningEffort`의 실제 보고값. 미반환이면 “미제공”.
 - **요약·타임라인:** 계획 패스·검색/도구 호출·동일 소스 추가 호출·KB 합성 수, 시각·소요 시간·결과 수·토큰.
+- **fan-out 배지:** 다른 소스 조회 활동(같은 지식원 호출 포함)과 `startedAt`~`completedAt` 구간이 겹치는 행의 ID 옆에 표시합니다. 기존 `overlaps` 관찰값을 사용하며 모델 계획·합성 활동이나 시각이 누락된 조회에는 붙이지 않습니다. 서버의 fan-out 그룹 ID나 인과관계를 뜻하지 않으며, 활동 ID 순서나 배지 유무만으로 직렬 실행을 단정하지 않습니다.
 - **실제 하위 쿼리:** 소스별 `*Arguments`를 공통 형식으로 파싱해 검색문·도구·필터·결과 수·경고/오류를 먼저 표시합니다. MCP의 로트 ID 같은 실제 도구 입력도 읽을 수 있고, 각 카드 아래의 상세 JSON은 기본적으로 접혀 있습니다.
 - **추가 호출:** 같은 소스의 이전/후속 activity ID, 검색문·입력·관련 결과 수를 나란히 비교합니다. 원본 상세 필드는 아래에서 펼쳐 볼 수 있습니다. 해석하지 못하는 새 유형은 추측하지 않고 상세 JSON 확인을 안내합니다.
 - **인용 연결:** `activity.id → reference.activitySource → reference.id → [ref_id:…]`, 해당 reference의 실제 본문과 접힌 상세 JSON.
@@ -194,7 +211,7 @@ GitHub 업로드 전 저장소 루트에서 `git add --dry-run labs/06-hostedage
 
 - Python 3.11 이상, Azure CLI와 올바른 워크숍 구독 로그인. 배포 런타임은 Python 3.13입니다.
 - 기존 Foundry 프로젝트·모델·공정/품질 KB·7개 KS. 이 데모가 원본 구성을 처음부터 만들지는 않습니다.
-- 사용자에게 Search Index Data Reader, 필요한 M365 라이선스·Fabric 원본 접근 권한·위임 동의. 구성 탭에는 정의 읽기 권한도 필요합니다.
+- 사용자에게 Search Index Data Reader, 필요한 M365 라이선스·Fabric 원본 접근 권한·위임 동의. 오른쪽 Knowledge Base 패널에는 정의 읽기 권한도 필요합니다.
 - 품질 질문용 Fabric capacity **Active** 상태.
 - 배포 수행 계정에 리소스·역할 할당 생성과 Entra 앱 설정 권한.
 - JavaScript 테스트에는 Node.js 22.7 이상. 웹 실행 자체에는 Node.js가 필요하지 않습니다.
@@ -229,7 +246,7 @@ chmod 600 .env
 | `WEB_ORIGIN` | 로컬 `http://localhost:8000`, 클라우드는 배포된 HTTPS origin |
 | `OTEL_SDK_DISABLED` | 검증 구성은 `true`, 요청/토큰 tracing 수집 비활성화 |
 
-Container Apps의 `AZURE_CLIENT_ID`는 배포 identity의 client ID입니다. `QUESTION_SET_PATH`는 컨테이너에 패키징된 질문 JSON 경로이며 로컬 노트북 조회에는 설정하지 않습니다.
+Container Apps의 `AZURE_CLIENT_ID`는 배포 identity의 client ID입니다. `QUESTION_SET_PATH`는 컨테이너에 패키징된 질문 JSON 경로이며 로컬 노트북 조회에는 설정하지 않습니다. `SCENARIO_CONTENT_DIR`는 컨테이너의 공개 시나리오 파일 경로로 Dockerfile에서 지정하며, 로컬에서는 00 폴더를 그대로 읽습니다.
 
 ### Entra 웹 앱 등록
 
@@ -274,7 +291,9 @@ Container Apps의 `AZURE_CLIENT_ID`는 배포 identity의 client ID입니다. `Q
 ../.venv/bin/python deploy_web.py
 ```
 
-foundation what-if/배포 → ACR 원격 빌드 → 웹 what-if/배포 → **새 이미지의 Ready revision 확인** → Entra HTTPS callback 추가 → `/healthz`와 **정적 파일 전체의 빌드 context 일치** 확인 순서입니다. 기존 revision의 health 응답만으로 새 버전 배포 성공으로 보지 않습니다. 재배포도 같은 명령입니다. 로컬 Docker 설치는 필요하지 않습니다.
+foundation what-if/배포 → ACR 원격 빌드 → 웹 what-if/배포 → **새 이미지의 Ready revision 확인** → Entra HTTPS callback 추가 → `/healthz`와 **정적 파일·시나리오 원본·도식의 빌드 context 일치** 확인 순서입니다. 기존 revision의 health 응답만으로 새 버전 배포 성공으로 보지 않습니다. 재배포도 같은 명령입니다. 로컬 Docker 설치는 필요하지 않습니다.
+
+2026-10-03 20:05(KST)의 **과거 배포 기록**은 `ca-iq-demo-web--0000011` Ready, 정적 파일·시나리오 원본·도식 일치를 확인했습니다. 당시 revision에는 상단 GitHub/시나리오 링크와 MES 소개·링크가 포함됐습니다. **재배포하면 revision이 바뀌므로 이 번호를 현재 배포 버전으로 사용하지 마세요.** 이는 당시 웹 배포 검증이며 새 질문 4개의 KB·모델 호출 성공 또는 현재 Fabric 상태를 뜻하지 않습니다.
 
 **이미 등록한 동일 URL·동일 Entra 앱의 소스만 재배포**하는 경우에는 다음 명령으로 기존 앱 등록을 건드리지 않을 수 있습니다. 이 옵션은 Graph 조회·변경을 하지 않으며, 신규 URL/앱 최초 배포에는 사용하지 않습니다. 실행 후 실제 브라우저 로그인을 확인합니다.
 
@@ -292,7 +311,7 @@ foundation what-if/배포 → ACR 원격 빌드 → 웹 what-if/배포 → **새
 
 최초 East US 환경은 용량 부족으로 실패해 웹만 East US 2로 전환했습니다. 기존 ACR·identity는 재사용하고 실패한 환경만 삭제했습니다.
 
-[Dockerfile](code/Dockerfile)과 [allowlist](code/.dockerignore)를 사용하며, [배포 스크립트](code/deploy_web.py)가 웹 파일과 추출한 질문 JSON만 담은 임시 context를 만듭니다. **노트북 원본·저장 출력·`.env`·로그·Agent 서버 코드는 이미지에 넣지 않습니다.** 소스 폴더에서 직접 `docker build .`를 하는 대신 위 스크립트를 사용합니다.
+[Dockerfile](code/Dockerfile)과 [allowlist](code/.dockerignore)를 사용하며, [배포 스크립트](code/deploy_web.py)가 웹 파일·추출한 질문 JSON·00 공개 README·SVG 도식 2개를 담은 임시 context를 만듭니다. **노트북 원본·저장 출력·`.env`·로그·Agent 서버 코드는 이미지에 넣지 않습니다.** 소스 폴더에서 직접 `docker build .`를 하는 대신 위 스크립트를 사용합니다.
 
 컨테이너는 non-root, HTTPS only, readiness/liveness probe, Secure 세션 쿠키·HSTS로 실행됩니다. Entra 비밀값은 secure ARM parameter → Container Apps secret → `secretRef`로 주입합니다. 기존 localhost callback은 보존하고 배포 HTTPS callback만 추가합니다.
 
@@ -325,17 +344,19 @@ npm test
 ### 원격 Hosted Agent 회귀
 
 ```bash
-# 노트북의 모든 질문, 기본 Medium
+# 현재 노트북 질문 4개, 기본 Medium: Hosted Agent 호출 4회
 ../.venv/bin/python evaluate.py
-# 노트북의 모든 질문 × Low/Medium
+# 현재 노트북 질문 4개 × Low/Medium: Hosted Agent 호출 8회
 ../.venv/bin/python evaluate.py --efforts low medium --output ../logs/reasoning-comparison.json
 ```
 
-이는 **유료 실환경 호출**이며 CLI 사용자 위임 토큰을 사용합니다. 브라우저 로그인 테스트를 대신하지 않습니다. 출력 상대 경로는 실행 위치와 무관하게 `code/` 기준이며, 기본 출력은 `../logs/evaluation.json`입니다. 재실행하면 지정한 로그 파일을 갱신하므로 이전 결과를 보존하려면 새 파일명을 지정하세요.
+명령은 앞 절과 같이 **`code/`에서** 실행합니다. 이는 **유료 실환경 호출**이며 CLI 사용자 위임 토큰을 사용합니다. 브라우저 로그인 테스트를 대신하지 않습니다. 작성 중인 공정 질문도 자동 포함하므로 먼저 원문을 검토하세요. 출력 상대 경로는 실행 위치와 무관하게 `code/` 기준이며, 기본 출력은 `../logs/evaluation.json`입니다. 재실행하면 지정한 로그 파일을 갱신하므로 이전 결과를 보존하려면 새 파일명을 지정하세요.
 
 Agent/웹 배포·앱 등록 스크립트도 상위 `logs/`를 자동 생성해 결과를 기록합니다. **새로 clone한 저장소에는 과거 로그가 없어도 됩니다.** 실행 결과는 Git에서 제외하며, 공유하려면 토큰·원문·식별자를 검토해 별도 전달하세요.
 
 진행자 환경에서는 로그인 전 데이터 API의 401, 실제 Entra 로그인, Markdown·인용·디버그·Knowledge Base 패널, 약 219초의 스트림 완료를 확인했습니다. Low에서는 일부 소스를 선택하지 않아 부분 확인이 된 실행도 있었습니다. 이 이력은 새 환경에서의 성공이나 답변의 정답을 보증하지 않으므로 자신의 실행 결과로 판단합니다.
+
+이번 문서 점검은 현재 소스·노트북 질문·기존 배포 기록을 대조하는 로컬 검증입니다. 과거 로그인·스트리밍 결과를 재실행하지 않았으며, 현재 질문 4개 전체의 원격 성공을 주장하지 않습니다. 로컬 모의 테스트 통과도 실제 Entra 동의·KS 권한·원본 데이터·Fabric capacity 가용성을 대신 검증하지 않습니다.
 
 **HTTP 200·reference 반환·인용 연결은 업무 정답을 보증하지 않습니다.** “검색 결과 없음”도 reference로 반환될 수 있습니다. 실제 Work IQ 조회에서 지정 메일을 찾지 못한 사례가 있으므로 요청·결정·담당자를 미확인으로 남깁니다. 근거 누락·HTTP 206·소스 오류·미해결 인용을 성공으로 바꾸지 않습니다.
 
