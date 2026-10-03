@@ -94,6 +94,19 @@ class WebTests(unittest.TestCase):
         self.assertIn('<textarea id="question"', response.text)
         self.assertNotIn('<select id="sample"', response.text)
 
+    def test_question_api_returns_current_notebook_catalog(self):
+        from questions import load_questions
+        self.web.sessions["questions"] = {
+            "expires": time.time() + 60,
+            "account": {"username": "test@example.test"},
+        }
+        self.client.cookies.set("iq_session", "questions")
+        response = self.client.get("/api/questions")
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(load_questions(), response.json())
+        self.assertEqual(["process"] * 3 + ["quality"] * 4,
+                         [question["kb"] for question in response.json()])
+
     def test_callback_rejects_unknown_state(self):
         self.assertEqual(400, self.client.get("/auth/callback?state=forged&code=bogus").status_code)
 

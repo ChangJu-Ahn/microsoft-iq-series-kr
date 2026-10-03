@@ -54,6 +54,33 @@ class RetrievalTests(unittest.TestCase):
         quality = next(q for q in questions if q["kb"] == "quality")
         self.assertIn("NCR-2026-0009", quality["question"])
 
+    def test_process_catalog_replaces_warehouse_draft_with_requested_questions(self):
+        from questions import load_questions
+        questions = load_questions()
+        self.assertEqual(["process"] * 3 + ["quality"] * 4, [q["kb"] for q in questions])
+        self.assertEqual([
+            "EQP-CVD01, EQP-IMPL01 장비 메뉴얼을 참고해서 주의할 내용이 있는지 살펴보자. "
+            "그리고 그 주의할 내용에 대해서 인터넷에서는 어떤 내용으로 해결할 수 있는지도 "
+            "검색해서 인사이트를 제공해 줘",
+            "MES에서 현재 상태가 Hold인 로트정보 리스트를 검색해서 어떤 공정에서 로트가 "
+            "홀드 되었는지 확인하자. 그리고 해당 공정은 어떤 작업을 하는지도 웹 사이트에서 "
+            "찾아서 설명해 줘.",
+        ], [q["question"] for q in questions if q["kb"] == "process"][1:])
+        self.assertFalse(any("제품창고에서 대기 중인 로트를 3개" in q["question"] for q in questions))
+
+    def test_quality_catalog_appends_requested_business_questions(self):
+        from questions import load_questions
+        questions = [q["question"] for q in load_questions() if q["kb"] == "quality"]
+        self.assertEqual([
+            "LOT0004 로트의 품질 이슈가 있었는지 확인해보자. 품질 이슈가 있었다면, 공정 및 "
+            "사용 장비를 확인 해 해당 장비에서 발생한 센서 데이터에서 특이사항이 없었는지 "
+            "확인해 보자. 마찬가지로 인수인계 교대서, 그리고 작업지시서, 그리고 내 이메일이나 "
+            "업무 컨텍스트에서도 관련 내용이 없었는지 검색해서 요약해보자",
+            "가장 최근에 발생한 5개의 품질 이슈를 확인해보자. 그리고 이 품질이슈의 검사결과, "
+            "그리고 해당 장비에서 발생했던 센서데이터를 모두 취합해서 원인이 있을법한 내용을 "
+            "조합해보자.",
+        ], questions[2:])
+
     def test_quality_request_has_all_sources_and_delegated_headers(self):
         from agent.retrieval import make_request
         path, body, headers = make_request("quality", "질문", "search-token", "work-token")
