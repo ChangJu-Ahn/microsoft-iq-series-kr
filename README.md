@@ -14,7 +14,7 @@
 2. 각 랩의 메인 README에서 **업무 질문·수행 내용·산출물·해결 범위와 한계**를 먼저 읽고 실행 자료로 이동합니다.
 3. [01 사내 시스템](labs/01-inhouse-system/README.md) → [02 Fabric IQ](labs/02-fabric-iq/README.md) → [03 Web IQ](labs/03-web-iq/README.md) → [04 Work IQ](labs/04-work-iq/README.md) → [05 Foundry IQ](labs/05-foundry-iq/README.md) 순서로 진행합니다.
 
-참가자는 각자의 계정·리소스 그룹·실습 환경을 구축하는 것을 원칙으로 합니다. Web IQ만 진행자가 사용 허용된 실습 키를 제공하며 포털 접근·키 발급을 참가자에게 전제하지 않습니다. Foundry IQ의 새 리소스 구축은 [실제 화면을 따라 하는 README-V2](labs/05-foundry-iq/README-V2.md)를 따릅니다. 기존 Foundry README의 진행자 검증 환경·호출 기록과 신규 구축 가이드는 구분합니다.
+참가자는 각자의 계정·리소스 그룹·실습 환경을 구축하는 것을 원칙으로 합니다. Web IQ만 진행자가 사용 허용된 실습 키를 제공하며 포털 접근·키 발급을 참가자에게 전제하지 않습니다. Foundry IQ의 새 리소스 구축은 [실제 화면을 따라 하는 실습 가이드](labs/05-foundry-iq/README.md)를 따릅니다. Web IQ를 포함한 기존 운영 KB와 질문 목록은 [발표자용 Hosted Agent 참고](labs/06-hostedagent/README.md#발표자용-기존-kb-구성)로 구분합니다.
 
 실행 전 해당 실습의 계정·권한·용량·비용 조건을 확인하세요. 제공된 Mock MES 주소와 이력을 사용하고, 실제 인증키는 공유·커밋하지 않습니다. 실습 후에는 세션·예약·유료 리소스를 확인해 정리합니다.
 
@@ -27,7 +27,7 @@
 | 02 | [Fabric IQ](labs/02-fabric-iq/README.md) | 운영 데이터로 품질·비용·설비·측정 문제 조사 |
 | 03 | [Microsoft Web IQ](labs/03-web-iq/README.md) | 제공 키로 공개 정보의 내용·출처 확인 |
 | 04 | [Work IQ](labs/04-work-iq/README.md) | 협업 요청·보충 의견과 추가 운영 질문 구분 |
-| 05 | [Foundry IQ](labs/05-foundry-iq/README.md) | 공정·품질 v2 KB의 복합 질문과 근거 검증 |
+| 05 | [Foundry IQ](labs/05-foundry-iq/README.md) | 화면을 따라 KB·KS 신규 구축, 사용자 헤더로 API 근거 검증 |
 | 참고 | [Hosted Agent 웹 데모](labs/06-hostedagent/README.md) | 발표자용 Entra ID 로그인·스트리밍·Foundry IQ 실행 기록. 참가자 실습 아님 |
 
 개별 랩은 자신의 업무 질문에 답했는지, Foundry 랩은 근거를 결합해 추가로 무엇을 확인했는지 평가합니다. 검증된 호출 범위와 미검증 분석·신규 구축 범위는 각 안내에서 구분합니다.
@@ -59,7 +59,7 @@ MicrosoftIQSeries-KR/
 - 각 실습의 안내는 해당 폴더의 README에 작성하고, 코드와 설정은 해당 실습 폴더에 둡니다. Fabric 실습은 현재 `helper-new`를 사용합니다.
 - 현재 실행 절차와 검증 범위는 각 랩 README를 따릅니다. 로컬 계획·작업 기록은 공개 실습 자료에 포함하지 않습니다.
 - 실습 데이터는 각 랩이 안내하는 원본·노트북·데이터 폴더를 사용합니다.
-- 문서용 이미지는 루트 또는 해당 랩의 `assets/`에 둡니다.
+- 화면 캡처는 루트 `assets/`의 실습별 폴더에 둡니다. Fabric IQ·Web IQ·Foundry IQ는 각각 `assets/fabric-iq/`, `assets/web-iq/`, `assets/foundry-iq/`를 사용합니다.
 - 실행·검증의 확인 범위와 한계는 해당 실습 안내에 기록합니다. 상세 실행 로그는 각 실습의 로컬 폴더에 보관하고 Git에서 제외합니다.
 
 ## Copilot 커스텀 지침
