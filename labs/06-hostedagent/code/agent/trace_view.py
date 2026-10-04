@@ -7,7 +7,7 @@ from typing import Any
 from retrieval_trace import parse_trace
 
 SOURCE_CONTENT_LIMIT = 12000
-CONTENT_FIELDS = ("snippet", "chunk", "content", "text", "page_content", "body")
+CONTENT_FIELDS = ("fabricAnswer", "snippet", "chunk", "content", "text", "page_content", "body")
 METADATA_FIELDS = ("uid", "id", "chunk_id", "parent_id", "document_id", "title",
                    "name", "url", "blob_url", "file_name", "path")
 

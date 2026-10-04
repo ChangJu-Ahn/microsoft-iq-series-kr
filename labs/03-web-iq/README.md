@@ -44,7 +44,7 @@ Playground의 **Vertical**은 조회할 정보의 종류 또는 기능을 선택
 | Vertical | 역할 | 에이전트가 활용하는 정보 |
 | --- | --- | --- |
 | **Web** | 검색어에 관련된 웹 문서와 그라운딩 문맥 조회 | 문서 제목·출처·본문 또는 관련 문맥. 이 실습의 웹 검색 |
-| **Videos** | 관련 동영상 조회 | 영상 URL·게시자·길이, 제공되는 경우 요약·구간 정보. 이 실습의 YouTube 결과 확인 |
+| **Videos** | 관련 동영상 조회 | 영상 URL·게시자·길이, 제공되는 경우 요약·구간 정보. 동영상의 실제 출처·게시자 확인 |
 | **Browse** | 지정한 URL의 본문 추출 | 검색으로 찾은 페이지를 후속 조회해 읽을 본문. 새 검색어로 문서를 찾는 Web과 구분 |
 | **News** | 최근 뉴스 조회 | 최근 14일의 기사와 출처·내용. 더 오래된 정보는 Web 검색 활용 |
 | **Images** | 관련 이미지 조회 | 이미지·썸네일 URL, 원문 페이지, 설명과 크기. 이 실습의 이미지 검색 |
@@ -63,9 +63,9 @@ Playground의 **Vertical**은 조회할 정보의 종류 또는 기능을 선택
 
 ## 이 핸즈온에서 확인할 내용
 
-Microsoft Foundry와 Microsoft Copilot을 **웹·이미지·YouTube 동영상**으로 검색하고, 같은 검색을 포털 밖의 Python에서 REST와 MCP로 호출합니다.
+Microsoft Foundry와 Microsoft Copilot을 **웹·이미지·동영상**으로 검색하고, 같은 검색을 포털 밖의 Python에서 REST와 MCP로 호출합니다. 세 Vertical 모두 같은 검색어를 그대로 사용합니다.
 
-**진행자는 포털 시연·키 발급을, 참가자는 제공된 실습 키로 REST·MCP 직접 실행을 담당**합니다. 참가자가 Web IQ 포털에 접근하거나 서비스를 직접 배포·키 발급할 수 있다고 가정하지 않습니다. 외부 고객 실습과 키 제공이 허용되는지 진행자가 먼저 확인해야 하며, 키 발급 가능 여부만으로 공유 허용을 판단하지 않습니다. 허용된 키가 준비되지 않았다면 저장된 실제 출력 분석으로 범위를 제한하고 직접 호출을 완료했다고 기록하지 않습니다.
+**진행자는 포털 시연·키 발급을, 참가자는 제공된 실습 키로 REST·MCP 직접 실행을 담당**합니다. 참가자가 Web IQ 포털에 접근하거나 서비스를 직접 배포·키 발급할 수 있다고 가정하지 않습니다. 외부 고객 실습과 키 제공이 허용되는지 진행자가 먼저 확인해야 하며, 키 발급 가능 여부만으로 공유 허용을 판단하지 않습니다. 허용된 키가 준비되지 않았다면 아래의 기존 캡처 분석으로 범위를 제한하고 직접 호출을 완료했다고 기록하지 않습니다.
 
 > 2026-09-30 확인: 공식 포털은 접근 대상을 **Limited Access**로 안내합니다. 개별 API 카드의 `GA` 표기를 모든 고객의 포털 접근 가능 여부와 혼동하지 마세요. 검색 결과와 UI는 변경될 수 있습니다.
 
@@ -94,45 +94,47 @@ Microsoft Foundry와 Microsoft Copilot을 **웹·이미지·YouTube 동영상**�
 | --- | --- | --- | --- |
 | Web | `Microsoft Foundry` | `Microsoft Copilot` | `webResults` |
 | Images | `Microsoft Foundry` | `Microsoft Copilot` | `imageResults` |
-| Videos | `Microsoft Foundry YouTube` | `Microsoft Copilot YouTube` | `videoResults` |
+| Videos | `Microsoft Foundry` | `Microsoft Copilot` | `videoResults` |
 
-**YouTube는 별도 Vertical이 아닙니다.** Videos 검색 결과의 실제 `url`이 YouTube인지 확인합니다. 검색어에 YouTube를 넣는 것은 YouTube 전용 필터를 설정하는 것과 다릅니다.
+**Vertical만 바꾸고 검색어는 유지합니다.** Videos에서도 `YouTube`를 입력할 필요가 없으며 노트북이 자동으로 덧붙이지도 않습니다. Videos는 특정 동영상 사이트 전용 검색이 아니므로 실제 결과의 URL과 게시자를 확인합니다.
+
+아래 화면은 사용자가 갱신한 실제 Playground 캡처입니다. 동영상 검색 입력에서도 `YouTube` 없이 동일한 제품명을 사용하는 것을 확인할 수 있습니다. 캡처의 결과는 해당 조회 시점의 예시이며, 재실행 시 순위와 내용이 달라질 수 있습니다.
 
 ### Web: Microsoft Foundry
 
-![Microsoft Foundry 웹 검색 실제 결과](assets/01-foundry-web.png)
+![Microsoft Foundry 웹 검색 실제 결과](../../assets/web-iq/01-foundry-web.png)
 
-`Microsoft Foundry | Microsoft Azure`와 공식 제품 페이지 URL이 반환됐습니다. 캡처는 기본 `contentFormat=html`의 응답을 Preview로 연 화면으로, HTML 태그가 텍스트로 표시됩니다. 아래 노트북에서는 `passage`로 바꿔 짧은 관련 문맥을 확인합니다.
+각 결과의 제목·URL·본문을 확인합니다. 포털에서 선택한 `contentFormat`과 실제 응답 형식을 구분하며, 아래 노트북에서는 `passage`로 짧은 관련 문맥을 확인합니다.
 
 ### Web: Microsoft Copilot
 
-![Microsoft Copilot 웹 검색 실제 결과](assets/02-copilot-web.png)
+![Microsoft Copilot 웹 검색 실제 결과](../../assets/web-iq/02-copilot-web.png)
 
-Copilot 공식 사이트와 제품 소개 페이지가 반환됐습니다. 첫 사이트의 수집된 내용에는 `Not available in your region` 안내가 포함됐습니다. **검색 성공과 원문의 품질·지역별 접근 가능성은 별개**라는 점을 설명합니다.
+실제 반환된 URL이 공식 사이트인지, 수집된 본문이 질문에 필요한 내용인지 확인합니다. **검색 성공과 원문의 품질·지역별 접근 가능성은 별개**이며, 지역 제한 안내 같은 본문이 반환될 수도 있습니다.
 
 ### Images: Microsoft Foundry
 
-![Microsoft Foundry 이미지 검색 실제 JSON 결과](assets/03-foundry-images.png)
+![Microsoft Foundry 이미지 검색 실제 JSON 결과](../../assets/web-iq/03-foundry-images.png)
 
 `imageResults`에서 제목, 이미지 `url`, 원문 `hostPageUrl`, 생성된 `caption`, 크기와 `thumbnailUrl`을 확인합니다. 이번 화면은 이미지 갤러리가 아니라 포털의 실제 JSON 응답입니다.
 
 ### Images: Microsoft Copilot
 
-![Microsoft Copilot 이미지 검색 실제 JSON 결과](assets/04-copilot-images.png)
+![Microsoft Copilot 이미지 검색 실제 JSON 결과](../../assets/web-iq/04-copilot-images.png)
 
 Copilot 관련 이미지의 원문 페이지와 설명이 반환됐습니다. 이미지 검색 결과는 공식 Microsoft 자료로만 제한되지 않으며, `caption`의 정확성과 이미지 사용 권리는 따로 확인해야 합니다.
 
-### Videos: Microsoft Foundry / YouTube
+### Videos: Microsoft Foundry
 
-![Microsoft Foundry YouTube 동영상 검색 실제 결과](assets/05-foundry-youtube.png)
+![Microsoft Foundry 동일 검색어의 동영상 검색 결과](../../assets/web-iq/05-foundry-youtube.png)
 
-Microsoft Azure 채널의 `Build, test, monitor and optimize a voice agent in Microsoft Foundry` 영상이 반환됐습니다. `url`의 YouTube 출처와 `publishedBy`, `length`, `embeddingUrl`을 확인합니다. `summary`, `moments` 등 선택 필드는 모든 영상에 있는 것이 아닙니다.
+`Microsoft Foundry` 검색의 `videoResults`에서 제목, 실제 `url`, `publishedBy`, `length`, `embeddingUrl`을 확인합니다. 검색어에 사이트 이름을 덧붙이지 않아도 동영상이 반환되며, `summary`, `moments` 등 선택 필드는 모든 영상에 있는 것이 아닙니다.
 
-### Videos: Microsoft Copilot / YouTube
+### Videos: Microsoft Copilot
 
-![Microsoft Copilot YouTube 동영상 검색 실제 결과](assets/06-copilot-youtube.png)
+![Microsoft Copilot 동일 검색어의 동영상 검색 결과](../../assets/web-iq/06-copilot-youtube.png)
 
-Tool Finder 채널의 `The New Microsoft Copilot Is Here: Everything You Need to Know` 영상이 반환됐습니다. 공식 채널인지 여부는 검색어가 아니라 게시자와 실제 출처로 판단합니다.
+`Microsoft Copilot`만 입력한 동영상 검색 결과입니다. 공식 채널인지 여부는 검색어가 아니라 `publishedBy`와 실제 출처로 판단합니다.
 
 ## 2. API 키 발급과 REST 노트북
 
@@ -144,7 +146,7 @@ Tool Finder 채널의 `The New Microsoft Copilot Is Here: Everything You Need to
 
 고객 실습에 허용된 행사 전용 키를 승인된 비밀 전달 수단으로 제공합니다. 정책·발급 한도에 따라 참가자별 키 또는 공동 키를 사용하되, 사용량 부담과 종료 후 폐기 시점을 안내합니다. “임시”라는 이름이 자동 만료를 뜻하지 않습니다. 참가자는 포털에서 발급하지 않고 아래 숨김 입력으로 전달받은 키를 사용합니다.
 
-![API 키 이름 입력 양식](assets/07-create-api-key.png)
+![API 키 이름 입력 양식](../../assets/web-iq/07-create-api-key.png)
 
 이번 검증에서는 `webiq-workshop-20260930` 키를 실제로 발급해 REST와 MCP 양쪽에 사용했습니다. 캡처는 동일한 발급 양식을 다시 열어 키 이름만 표시한 화면이며, 추가 키를 만들거나 기존 `default` 키를 회전하지 않았습니다. 키 값은 포함하지 않았습니다.
 
@@ -155,7 +157,7 @@ Tool Finder 채널의 `The New Microsoft Copilot Is Here: Everything You Need to
 1. Python 3.11 이상의 환경을 커널로 선택합니다. 기존 환경이 있으면 재사용하며, 로컬 가상환경은 Git에 포함되지 않으므로 새로 복제한 저장소에 자동으로 제공되지는 않습니다.
 2. 노트북 2번 셀로 `httpx`를 설치합니다.
 3. 3번 셀의 숨김 입력에 키를 넣습니다. 미리 설정한 `WEBIQ_API_KEY` 환경 변수도 사용할 수 있습니다. 환경 변수 방식은 커널 시작 전에 설정해야 합니다.
-4. 4번 셀을 실행해 두 검색어 × 세 카테고리를 조회합니다. 각 요청의 HTTP 상태, 결과 건수, 제목·출처·짧은 발췌가 출력됩니다.
+4. 4번 셀을 실행해 두 검색어 × 세 카테고리를 조회합니다. 검색어를 바꾸려면 `for topic in (...)`의 목록을 수정합니다. 각 `topic`은 세 카테고리에 동일하게 전달되며, 각 요청의 HTTP 상태, 결과 건수, 제목·출처·짧은 발췌가 출력됩니다.
 5. 6번 셀에서 첫 웹 결과의 JSON 발췌를 확인합니다.
 
 호출은 `POST https://api.microsoft.ai/v3/search/{web|images|videos}`에 `x-apikey` 헤더와 JSON 요청 본문을 직접 전달합니다. 웹은 `contentFormat=passage`, 모든 카테고리는 `maxResults=3`, `language=en`, `region=US`를 사용합니다. 최대 결과 수를 요청해도 실제 반환 건수는 달라질 수 있습니다.
@@ -166,7 +168,7 @@ Tool Finder 채널의 `The New Microsoft Copilot Is Here: Everything You Need to
 
 1. 동일한 Python 커널을 선택하고 2번 셀로 MCP SDK와 `httpx`를 설치합니다.
 2. 3번 셀에서 같은 키를 숨김 입력 또는 `WEBIQ_API_KEY`로 전달합니다.
-3. 4번 셀에서 `https://api.microsoft.ai/v3/mcp`에 연결합니다.
+3. 4번 셀에서 `https://api.microsoft.ai/v3/mcp`에 연결합니다. `for topic in (...)`의 검색어 목록을 REST 노트북과 동일하게 맞추면 세 도구에 같은 검색어가 전달됩니다.
 4. `initialize()`의 서버 정보, `list_tools()`의 허용 도구, 여섯 번의 `call_tool()` 결과를 차례로 확인합니다.
 
 이 예제는 **MCP 클라이언트의 직접 도구 호출**입니다. LLM이 도구를 자동 선택하는 에이전트 예제가 아니며, VS Code에 MCP 서버를 별도 등록하지 않아도 됩니다. `web`, `images`, `videos`가 도구 목록에 없으면 권한 확인이 먼저입니다.
@@ -175,7 +177,11 @@ REST와 같은 매개변수 및 결과 필드를 사용합니다. MCP 결과의 
 
 ## 실제 검증 결과
 
-2026-09-30, 로컬 Python 3.14.2 / `httpx 0.28.1` / `mcp 1.30.0`에서 실행했습니다. **노트북에는 실제 실행 출력이 저장돼 있습니다.**
+아래는 **2026-09-30의 이전 검색어 구성**을 로컬 Python 3.14.2 / `httpx 0.28.1` / `mcp 1.30.0`에서 실행한 기록입니다. 당시에는 Videos에만 `YouTube`를 덧붙였습니다.
+
+이후 위의 Playground 스크린샷은 동일 검색어 구성으로 교체됐습니다. 새 캡처가 아래의 과거 REST·MCP 실행 결과까지 재검증한 것은 아닙니다.
+
+2026-10-03에 세 Vertical의 검색어를 통일하면서 **검색 셀과 그 결과를 사용하는 발췌 셀의 이전 출력·실행 정보를 제거**했습니다. 설치·키 준비 셀의 과거 출력은 남아 있을 수 있지만 새 검색의 성공을 뜻하지 않습니다. 변경된 REST·MCP 요청은 오프라인 호출 검사로 확인했으며, 새 검색어의 실제 API 결과는 재실행하지 않았습니다.
 
 | 검증 대상 | 확인 결과 |
 | --- | --- |

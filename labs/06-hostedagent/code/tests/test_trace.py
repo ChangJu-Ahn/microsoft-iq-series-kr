@@ -8,6 +8,42 @@ sys.path.insert(0, str(ROOT.parents[1] / "05-foundry-iq/helper/code"))
 
 
 class TraceTests(unittest.TestCase):
+    def test_fabric_answer_is_extracted_and_keeps_its_reference_link(self):
+        from trace_view import debug_trace
+        answer = "NCR-2026-0001 / 공정검사 / 생산관리팀 / 선별 / 승인"
+        result = {
+            "activity": [{"id": 1, "type": "fabricDataAgent",
+                          "knowledgeSourceName": "ks-quality-fabric-v2", "count": 1}],
+            "references": [{"id": "0", "type": "fabricDataAgent", "activitySource": 1,
+                            "sourceData": {"fabricAnswer": answer}}],
+            "response": [{"content": [{"type": "text", "text": "요약 [ref_id:0]"}]}],
+        }
+        ref = debug_trace(result)["references"][0]
+        self.assertEqual("available", ref["sourceContentStatus"])
+        self.assertEqual(answer, ref["sourcePreview"])
+        self.assertEqual("sourceData.fabricAnswer", ref["sourceContentField"])
+        self.assertEqual("ks-quality-fabric-v2", ref["source"])
+        self.assertTrue(ref["cited"])
+        self.assertEqual({"fabricAnswer": answer}, result["references"][0]["sourceData"])
+
+    def test_encoded_fabric_answer_keeps_length_limit_and_redaction(self):
+        import json
+        from trace_view import debug_trace, SOURCE_CONTENT_LIMIT
+        source = json.dumps({"fabricAnswer": {
+            "api_key": "do-not-leak",
+            "records": "NCR 근거\n" * SOURCE_CONTENT_LIMIT,
+        }}, ensure_ascii=False)
+        ref = debug_trace({"references": [
+            {"id": "0", "type": "fabricDataAgent", "sourceData": source},
+        ]})["references"][0]
+        self.assertEqual("available", ref["sourceContentStatus"])
+        self.assertEqual("sourceData.fabricAnswer", ref["sourceContentField"])
+        self.assertEqual("json", ref["sourceContentFormat"])
+        self.assertEqual(SOURCE_CONTENT_LIMIT, len(ref["sourcePreview"]))
+        self.assertGreater(ref["sourceContentLength"], SOURCE_CONTENT_LIMIT)
+        self.assertTrue(ref["previewTruncated"])
+        self.assertNotIn("do-not-leak", ref["sourcePreview"])
+
     def test_search_snippet_is_extracted_before_metadata_and_preview_limit(self):
         from trace_view import debug_trace
         snippet = "실제 장비 점검 절차입니다.\n" * 100

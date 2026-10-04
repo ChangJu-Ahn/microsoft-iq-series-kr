@@ -19,7 +19,7 @@
 - 선택한 Knowledge Base(KB)와 연결된 Knowledge Source(KS)의 역할을 설명으로 확인합니다.
 - 상단 연결도에서 Entra 인증·웹·Foundry Hosted Agent·Foundry IQ와 각 지식원의 데이터 역할을 확인합니다. 선택한 KB만 강조하며 실제 호출 완료를 뜻하지는 않습니다.
 
-이 구현은 **커스텀 코드 기반 Microsoft Foundry Hosted Agent**입니다. `azure-ai-agentserver-invocations`의 `InvocationAgentServerHost`를 사용하며 **Microsoft Agent Framework(MAF) 구현이 아닙니다.** 로컬 배포 기록에는 `iq-workshop-demo` **버전 5**의 `active` 전환과 업로드·다운로드 ZIP 해시 일치가 남아 있습니다. 일반 API 서버에 Agent라는 이름만 붙이거나 Prompt Agent로 대체하지 않았습니다. 두 KB를 자동 결합하거나 원인 확정·출하 승인·업무 조치를 실행하지는 않습니다.
+이 구현은 **커스텀 코드 기반 Microsoft Foundry Hosted Agent**입니다. `azure-ai-agentserver-invocations`의 `InvocationAgentServerHost`를 사용하며 **Microsoft Agent Framework(MAF) 구현이 아닙니다.** 배포 스크립트는 `iq-workshop-demo`의 새 버전이 `active`인지 확인하고 업로드·다운로드 ZIP 해시를 대조합니다. 일반 API 서버에 Agent라는 이름만 붙이거나 Prompt Agent로 대체하지 않았습니다. 두 KB를 자동 결합하거나 원인 확정·출하 승인·업무 조치를 실행하지는 않습니다.
 
 ## 2. 아키텍처와 실행 흐름
 
@@ -139,7 +139,9 @@ GitHub 업로드 전 저장소 루트에서 `git add --dry-run labs/06-hostedage
 
 답변의 `[ref_id:…]`는 **MES·내부 매뉴얼·Web IQ 등 출처 이름과 ID가 있는 배지**로 표시합니다. 배지를 선택하면 답변 아래의 해당 근거 카드가 펼쳐집니다. 제목·본문·직접 원문 URL은 API에 실제 반환된 것만 사용합니다. URL이 없으면 없다고 표시하고, 미연결·중복 ID는 **근거 미확인**으로 표시합니다. 코드 블록이나 기존 링크 안의 인용 문자열은 배지로 바꾸지 않습니다.
 
-근거 본문은 JSON 앞부분이 아니라 `sourceData.snippet`, `chunk`, `content`, `text` 등 **실제 텍스트 필드를 먼저 추출**해 표시합니다. GUID·문서 ID·Blob URL은 접힌 메타데이터로 분리합니다. reference당 최대 12,000자를 표시하며, 이를 넘으면 원래 본문 길이와 잘림을 명시합니다. 본문 필드가 없으면 메타데이터를 대신 보여주지 않습니다. 이는 검색 결과에 반환된 청크 본문이며, 문서 전체 또는 모델이 실제 사용한 정확한 문장 범위를 뜻하지 않습니다. 추가 모델 요약이나 별도 문서 재조회는 하지 않습니다.
+근거 본문은 JSON 앞부분이 아니라 `sourceData.snippet`, `chunk`, `content`, `text` 등 **실제 텍스트 필드를 먼저 추출**해 표시합니다. Fabric은 `sourceData.fabricAnswer`에 담긴 **Fabric Data Agent의 반환 답변**을 추출합니다. 이는 원본 DB의 전체 행이나 SQL/GQL 실행 결과를 직접 보여준다는 뜻은 아닙니다. GUID·문서 ID·Blob URL은 접힌 메타데이터로 분리합니다. reference당 최대 12,000자를 표시하며, 이를 넘으면 원래 본문 길이와 잘림을 명시합니다. 본문 필드가 없으면 메타데이터를 대신 보여주지 않습니다. API가 반환한 범위를 표시하므로 문서 전체 또는 모델이 실제 사용한 정확한 문장 범위를 뜻하지 않습니다. 추가 모델 요약이나 별도 문서 재조회는 하지 않습니다.
+
+이전 Agent 응답에서 본문이 누락된 근거는 화면의 토글만 켜서 복구할 수 없습니다. 수정된 Agent로 질문을 다시 실행해야 새 응답의 본문을 볼 수 있습니다.
 
 근거 카드는 최종 답변에 실제 등장한 인용만 보여주며, 디버그 토글을 켜지 않아도 확인할 수 있습니다. 같은 질문의 모드 비교 표는 답변·근거 카드 뒤에 배치했습니다.
 
