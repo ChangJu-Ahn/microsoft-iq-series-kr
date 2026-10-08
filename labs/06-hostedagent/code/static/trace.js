@@ -166,6 +166,7 @@ export function renderTrace(container, trace) {
   container.append(node("p", "fan-out은 다른 조회와 시작·종료 구간이 겹친 활동에 표시합니다. 응답 시각 기준 관찰값이며, ID는 순차 실행 번호가 아닙니다. 배지가 없어도 직렬 실행을 뜻하지는 않습니다.", "small"));
   const fanOutIds = fanOutActivityIds(trace.timeline, trace.overlaps);
   const wrapper = node("div", undefined, "table-scroll");
+  wrapper.dataset.tour = "timeline";
   const table = node("table");
   const header = node("tr");
   for (const label of ["ID", "활동 / 소스", "소요 시간", "관련 결과"]) header.append(node("th", label));

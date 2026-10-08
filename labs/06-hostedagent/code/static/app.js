@@ -10,6 +10,7 @@ const $ = id => document.getElementById(id);
 const isDemo = location.pathname.replace(/\/$/, "") === "/demo";
 const demoQuestionHelp = "공정·품질 KB별로 기록된 질문 2개를 선택할 수 있습니다. 질문 내용과 검색 강도는 기록 당시와 동일합니다.";
 let demoData;
+let tour;
 let csrf = "";
 let questions = [];
 let selectedSample = "";
@@ -92,6 +93,7 @@ function resetAnswer(message) {
   $("debug-content").textContent = "선택한 KB에 질문하면 실행 기록을 표시합니다.";
   $("status").className = "";
   $("status").textContent = message;
+  tour?.setReplayState("idle");
 }
 
 function refreshKnowledgeBase() {
@@ -222,6 +224,7 @@ $("question-form").onsubmit = async event => {
   $("status").className = "";
   $("status").textContent = isDemo ? "저장된 응답을 재생합니다. 실제 서비스를 호출하지 않습니다…" : "Hosted Agent에 연결합니다…";
   let completed = false;
+  tour?.setReplayState("running");
   try {
     let events;
     if (isDemo) {
@@ -270,6 +273,7 @@ $("question-form").onsubmit = async event => {
       : `KB 조회 ${completion.retrieval_seconds}초 · 모델 생성 ${completion.generation_seconds}초 · 첫 답변(Agent) ${completion.first_delta_seconds}초 · 전체(Agent) ${completion.elapsed_seconds}초 · 첫 답변(브라우저) ${clientFirstDelta?.toFixed(3) ?? "미수신"}초 · 전체(브라우저) ${clientElapsed.toFixed(3)}초`;
     $("latency").hidden = false;
   } catch (error) {
+    completed = false;
     $("status").className = "error";
     $("status").textContent = error.name === "AbortError" ? "사용자가 중지했습니다. 답변은 미완료입니다." : error.message;
   } finally {
@@ -279,6 +283,7 @@ $("question-form").onsubmit = async event => {
     if (isDemo) $("reasoning-effort").disabled = true;
     $("cancel").hidden = true;
     controller = null;
+    tour?.setReplayState(completed ? "complete" : "idle");
   }
 };
 
@@ -344,3 +349,13 @@ if (isDemo) {
     }
   }
 } catch (error) { $("page-error").textContent = error.message; }
+
+if (isDemo && demoData) {
+  try {
+    const {initTour} = await import("./tour.js");
+    tour = initTour();
+  } catch (error) {
+    console.error("demo_tour_initialization_failed", error);
+    $("tour-announcement").textContent = `가이드를 불러오지 못했습니다: ${error.message} 데모는 직접 사용할 수 있습니다.`;
+  }
+}

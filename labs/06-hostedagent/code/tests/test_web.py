@@ -92,6 +92,32 @@ class WebTests(unittest.TestCase):
             "kb": "quality", "question": "q"
         }).status_code)
 
+    def test_demo_tour_controls_start_hidden_and_reference_links_keep_opener_safe(self):
+        from html.parser import HTMLParser
+
+        class Elements(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.by_id = {}
+
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                if "id" in attrs:
+                    self.by_id[attrs["id"]] = attrs
+
+        elements = Elements()
+        elements.feed(self.client.get("/").text)
+        self.assertIn("hidden", elements.by_id["demo-tour"])
+        self.assertIn("hidden", elements.by_id["tour-start"])
+        self.assertEqual("false", elements.by_id["demo-tour"]["aria-modal"])
+        for name in ["demo-mail-link", "demo-foundry-link", "demo-fabric-link", "demo-mes-link"]:
+            self.assertEqual("_blank", elements.by_id[name]["target"])
+            self.assertIn("noopener", elements.by_id[name]["rel"])
+        self.assertEqual(
+            "https://mock-mes.greenrock-bb44c93a.koreacentral.azurecontainerapps.io/",
+            elements.by_id["demo-mes-link"]["href"],
+        )
+
     def test_clickthrough_mail_is_public_and_read_only(self):
         response = self.client.get("/demo/mail")
         self.assertEqual(200, response.status_code)

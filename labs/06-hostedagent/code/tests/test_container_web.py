@@ -107,6 +107,8 @@ class ContainerWebTests(unittest.TestCase):
                 self.assertIn(f"static/demo/{name}", files)
                 self.assertIn(f"!static/demo/{name}", (target / ".dockerignore").read_text())
             self.assertIn("static/mail.html", files)
+            self.assertIn("static/tour.js", files)
+            self.assertIn("static/tour.css", files)
             dockerignore = (target / ".dockerignore").read_text()
             self.assertIn("!static/demo/", dockerignore)
             self.assertIn("!static/demo/recordings.json", dockerignore)
