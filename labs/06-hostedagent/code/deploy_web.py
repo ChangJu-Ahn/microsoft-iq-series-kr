@@ -47,6 +47,10 @@ def build_context(target: Path) -> str:
              "agent/retrieval.py"]
     files += [str(path.relative_to(ROOT)) for path in sorted((ROOT / "static").iterdir())
               if path.suffix in {".html", ".css", ".js"}]
+    files += [f"static/demo/{name}" for name in [
+        "recordings.json", "mail.json", "iq-settings.json",
+        "foundry-process.png", "foundry-quality.png", "fabric-legacy.png", "fabric-new.png",
+    ]]
     for filename in files:
         destination = target / filename
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -64,6 +68,15 @@ def build_context(target: Path) -> str:
             digest.update(str(path.relative_to(target)).encode())
             digest.update(path.read_bytes())
     return digest.hexdigest()
+
+
+def verify_static_assets(client: httpx.Client, url: str, root: Path):
+    for asset in sorted(path for path in root.rglob("*") if path.is_file()):
+        name = asset.relative_to(root).as_posix()
+        response = client.get(url + "/static/" + name)
+        response.raise_for_status()
+        if response.content != asset.read_bytes():
+            raise RuntimeError(f"배포된 정적 파일이 빌드 context와 다릅니다: {name}")
 
 
 def main(skip_entra_update: bool = False):
@@ -187,11 +200,7 @@ def main(skip_entra_update: bool = False):
             if response.json() != {"status": "ok"}:
                 raise RuntimeError("배포된 애플리케이션의 health 응답이 다릅니다.")
             with httpx.Client(timeout=60) as client:
-                for asset in sorted((context / "static").iterdir()):
-                    response = client.get(web["url"] + "/static/" + asset.name)
-                    response.raise_for_status()
-                    if response.content != asset.read_bytes():
-                        raise RuntimeError(f"배포된 정적 파일이 빌드 context와 다릅니다: {asset.name}")
+                verify_static_assets(client, web["url"], context / "static")
                 scenario_files = [("/scenario/content", context / "scenario-content/README.md")]
                 scenario_files += [(f"/scenario/assets/{name}", context / "scenario-content/assets" / name)
                                    for name in DIAGRAMS]

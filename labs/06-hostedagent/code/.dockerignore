@@ -12,6 +12,14 @@
 !static/*.html
 !static/*.css
 !static/*.js
+!static/demo/
+!static/demo/recordings.json
+!static/demo/mail.json
+!static/demo/iq-settings.json
+!static/demo/foundry-process.png
+!static/demo/foundry-quality.png
+!static/demo/fabric-legacy.png
+!static/demo/fabric-new.png
 !scenario-content/
 !scenario-content/README.md
 !scenario-content/assets/

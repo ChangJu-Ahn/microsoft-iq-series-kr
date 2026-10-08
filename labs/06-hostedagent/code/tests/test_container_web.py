@@ -11,6 +11,32 @@ sys.path.insert(0, str(ROOT))
 
 
 class ContainerWebTests(unittest.TestCase):
+    def test_deployed_static_verification_includes_nested_demo_files(self):
+        import httpx
+        from deploy_web import verify_static_assets
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "demo").mkdir()
+            (root / "index.html").write_bytes(b"home")
+            (root / "demo/mail.json").write_bytes(b'{"messages":[]}')
+            (root / "demo/fabric-new.png").write_bytes(b"image")
+            expected = {"/static/index.html": b"home",
+                        "/static/demo/mail.json": b'{"messages":[]}',
+                        "/static/demo/fabric-new.png": b"image"}
+            seen = []
+
+            def handler(request):
+                seen.append(request.url.path)
+                return httpx.Response(200, content=expected[request.url.path])
+
+            with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+                verify_static_assets(client, "https://demo.example.com", root)
+            self.assertEqual(set(expected), set(seen))
+            with httpx.Client(transport=httpx.MockTransport(
+                lambda request: httpx.Response(200, content=b"old-revision")
+            )) as client, self.assertRaisesRegex(RuntimeError, "빌드 context"):
+                verify_static_assets(client, "https://demo.example.com", root)
+
     def test_questions_module_imports_from_shallow_container_path(self):
         source = (ROOT / "questions.py").read_text()
         namespace = {"__file__": "/app/questions.py"}
@@ -74,6 +100,17 @@ class ContainerWebTests(unittest.TestCase):
             self.assertEqual(64, len(digest))
             self.assertIn("agent/retrieval.py", files)
             self.assertIn("notebook-questions.json", files)
+            self.assertIn("static/demo/recordings.json", files)
+            self.assertIn("static/demo/mail.json", files)
+            for name in ["iq-settings.json", "foundry-process.png", "foundry-quality.png",
+                         "fabric-legacy.png", "fabric-new.png"]:
+                self.assertIn(f"static/demo/{name}", files)
+                self.assertIn(f"!static/demo/{name}", (target / ".dockerignore").read_text())
+            self.assertIn("static/mail.html", files)
+            dockerignore = (target / ".dockerignore").read_text()
+            self.assertIn("!static/demo/", dockerignore)
+            self.assertIn("!static/demo/recordings.json", dockerignore)
+            self.assertIn("!static/demo/mail.json", dockerignore)
             self.assertFalse(any(".env" in p or p.endswith(".ipynb") or p.startswith("logs/") for p in files))
             self.assertNotIn("agent/main.py", files)
             self.assertEqual(load_questions(), json.loads((target / "notebook-questions.json").read_text()))

@@ -24,7 +24,7 @@ function publicUrl(value) {
   }
 }
 
-export function indexReferences(references = []) {
+export function indexReferences(references = [], {allowDemoMail = false} = {}) {
   const index = new Map();
   for (const [position, ref] of references.entries()) {
     if (!ref || !["string", "number"].includes(typeof ref.id)) continue;
@@ -36,7 +36,8 @@ export function indexReferences(references = []) {
     index.set(id, {
       ...ref, id, anchor: `evidence-${position}`, ...sourceInfo(ref.source),
       title: typeof ref.title === "string" && ref.title.trim() ? ref.title : null,
-      url: publicUrl(ref.citationUrl) || publicUrl(ref.url)
+      url: allowDemoMail && /^\/demo\/mail#mail-\d+$/.test(ref.citationUrl)
+        ? ref.citationUrl : publicUrl(ref.citationUrl) || publicUrl(ref.url)
     });
   }
   return index;

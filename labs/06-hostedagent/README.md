@@ -6,9 +6,31 @@
 
 **[배포된 웹 데모 열기](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io)**
 
+계정 없는 고객에게는 **[클릭스루 데모 바로가기](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io/demo)**를 공유하세요. [아웃룩 이메일](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io/demo/mail), [Foundry IQ 설정](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io/demo/foundry), [Fabric IQ 두 화면](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io/demo/fabric)도 로그인 없이 열립니다.
+
 상단의 **CJ 전자 시나리오**에서 고객 배경을 먼저 읽고 질문을 시작할 수 있습니다. [시나리오 페이지](https://ca-iq-demo-web.agreeabledune-2db01c8e.eastus2.azurecontainerapps.io/scenario)는 로그인 없이 열리며, **GitHub 레포** 링크로 원본 실습 자료에 이동할 수 있습니다.
 
-질문 실행·질문 목록·KB 설명 조회에는 Entra ID 로그인이 필요합니다. 시작 화면과 공개 시나리오 읽기에는 필요하지 않습니다. **품질 질문을 실행하기 전에는 `fabriciqv20917` 용량을 확인하고, Paused이면 Active로 재개**해야 합니다. 이전 검증 후 비용 방지를 위해 Paused로 복원했으며, 이 문서 점검에서 현재 용량을 다시 조회하지는 않았습니다.
+**리얼 데모**의 질문 실행·질문 목록·KB 설명 조회에는 Entra ID 로그인이 필요합니다. 시작 화면·공개 시나리오·**클릭스루 데모**에는 필요하지 않습니다. 리얼 데모에서 품질 질문을 실행하기 전에는 **해당 Fabric workspace에 연결된 현재 용량이 Active인지** 확인해야 합니다. 과거 구성의 `fabriciqv20917`을 현재 용량이라고 가정하거나 다른 용량을 임의로 재개하지 마세요.
+
+### 로그인 없는 클릭스루 데모
+
+시작 화면의 **Entra ID로 로그인**은 기존 리얼 데모를 그대로 실행합니다. 옆의 **데모 · 로그인 없이 체험**은 별도 `/demo` 경로입니다. 고객에게는 배포된 웹 주소 뒤에 `/demo`를 붙여 공유합니다. 메일만 보여줄 때는 `/demo/mail`을 사용합니다.
+
+- **목표:** 계정 없는 고객도 같은 화면에서 KB 선택 → 질문 선택 → 답변 재생 → 인용 근거 펼치기 → Foundry IQ 실행 기록 확인을 체험합니다.
+- **범위:** 공정 KB 2개·품질 KB 2개 질문의 실제 Medium 실행 기록입니다. 각 답변은 연결된 **모든 KS(공정 3개, 품질 4개)**의 반환 근거와 최종 답변 인용을 검사합니다. 기존 실습 질문을 바탕으로 전체 KS 조회에 필요한 질문 범위를 명시하며, 리얼 데모의 질문 목록은 변경하지 않습니다.
+- **메일:** **아웃룩 이메일 보기**를 누르면 별도 읽기 전용 화면이 열립니다. 지정된 Outlook 생산 폴더에서 기록한 **가상 업무 메일 10개 각각을 클릭하면 해당 본문 전체**가 표시됩니다. 제목·본문 검색도 가능합니다. 데모의 Work IQ 근거 카드에서는 확인된 메일의 로컬 사본을 열 수 있고, 기록 안의 인증 필요 Outlook URL도 이 사본으로 연결합니다. 실제 Outlook 연결·발송 기능은 없습니다.
+- **Foundry IQ 설정:** **Foundry IQ 설정 보기**에서 선택한 공정·품질 KB의 실제 Azure AI Search 포털 화면을 확인합니다. 두 KB를 전환하고, 연결된 KS 설명과 검색·답변 지시문 전문을 펼칠 수 있습니다. 계정 표시를 제외한 화면 기록이며, 저장·삭제·포털 채팅은 실행하지 않습니다.
+- **Fabric IQ 화면:** **Fabric IQ 화면 보기**에서 **같은 온톨로지의 구버전 그래프와 신버전 화면**을 전환합니다. 두 화면 모두 사용자가 펼쳐 놓은 배치를 기록했으므로 첫 진입부터 노드가 겹치지 않는 배치를 그대로 보여줍니다. 11개 엔터티·18개 관계를 표시하며, 신버전은 `Inspection` 선택 상태입니다. 화면 맞춤·150%·200% 확대와 크게 보기를 지원합니다. 실제 그래프 재배치·쿼리·편집은 하지 않습니다.
+- **공통 이동 메뉴:** 아웃룩·Foundry IQ·Fabric IQ 페이지 모두 상단에 질문 데모·아웃룩 이메일·Foundry IQ 설정·Fabric IQ 화면 메뉴를 유지하고 현재 페이지를 강조합니다.
+- **구분:** 답변·근거·실행 기록 렌더러는 리얼 데모와 공유합니다. 클릭스루는 저장된 delta를 짧게 재생할 뿐 새 모델·검색·M365 호출을 하지 않습니다. 표의 시간은 **기록 당시 실제 실행값**이며 현재 재생 속도나 현재 서비스 상태가 아닙니다. 자유 질문과 Low 비교는 리얼 데모에서 사용합니다.
+- **오류:** 기록 파일 누락·잘못된 질문·불완전한 기록은 오류로 표시하며, 실제 API 호출이나 임의 답변으로 대체하지 않습니다. 재생 중 **중지** 후 다시 실행할 수 있습니다.
+- **공개 범위:** 실제 메일 주소·세션·토큰은 넣지 않습니다. 실습 자료에 포함된 가상 업무 본문과 공개 가능한 응답만 정적 파일로 제공하므로, 이 파일의 내용은 로그인 없이 누구나 읽을 수 있습니다.
+
+로컬에서는 아래 웹 서버 실행 후 `http://localhost:8000/demo`를 엽니다. 참고 화면은 `/demo/mail`, `/demo/foundry?kb=process` 또는 `?kb=quality`, `/demo/fabric?view=legacy` 또는 `?view=new`로 직접 공유할 수 있습니다. Python 웹 의존성만 준비되어 있으면 클릭스루 자체에는 Azure CLI 로그인·Entra 계정·실제 KB가 필요하지 않습니다. `WEB_ORIGIN`은 실행 주소와 맞춥니다. 서버 종료로 로컬 데모를 정리하며, 데모 사용이 Azure 리소스를 새로 만들지는 않습니다.
+
+기록 데이터는 [recordings.json](code/static/demo/recordings.json)과 [mail.json](code/static/demo/mail.json)입니다. 갱신할 때 실제 실행에서 토큰·쿠키·요청 헤더를 제외하고 `status → evidence → trace → delta* → done` 이벤트를 기록하고, 각 질문의 `recorded_at`을 유지합니다. 모든 KS의 실제 반환·최종 인용 여부와 공개 가능 내용을 확인한 후 테스트합니다. 성공 배지나 인용을 수동으로 만들어 넣지 마세요.
+
+설정 전문은 [iq-settings.json](code/static/demo/iq-settings.json), 화면은 [공정 KB](code/static/demo/foundry-process.png)·[품질 KB](code/static/demo/foundry-quality.png)·[Fabric 구버전](code/static/demo/fabric-legacy.png)·[Fabric 신버전](code/static/demo/fabric-new.png)에 있습니다. 공정 KB·Fabric 구버전은 제공된 이미지, 품질 KB·Fabric 신버전은 로그인된 브라우저에서 캡처한 화면을 사용했습니다. 원본 첨부파일은 변경하지 않고 공개 사본의 상단 계정 영역만 제외했습니다. 캡처 안의 표시 상태는 현재 서비스 상태를 보장하지 않습니다.
 
 ## 1. 무엇을 보여주는 데모인가
 
@@ -41,7 +63,7 @@
 2. 웹의 서비스 호출 자격 증명(클라우드 Managed Identity / 로컬 Azure CLI)으로 Hosted Agent에 인증합니다. KB·질문·추론 강도를 보내고, 로그인 사용자의 위임 토큰은 질문과 분리된 전용 헤더로 전달합니다.
 3. Agent가 기존 KB를 조회합니다. **KB retrieve 자체는 비스트리밍**이며 계획·검색·답변 합성이 끝난 응답을 받습니다.
 4. 같은 응답에서 소스별 근거 상태와 디버그 정보를 파싱합니다. 이를 위해 추가 모델/검색을 호출하지 않습니다.
-5. 별도 모델 호출이 KB 답변의 사실·인용을 바탕으로 최종 답변을 **실제 토큰 스트리밍**합니다. 완성된 답변을 잘라 보내는 방식이 아닙니다.
+5. **리얼 데모에서는** 별도 모델 호출이 KB 답변의 사실·인용을 바탕으로 최종 답변을 **실제 토큰 스트리밍**합니다. 완성된 답변을 잘라 보내는 방식이 아닙니다. 클릭스루 `/demo`는 이 경로를 호출하지 않고 공개 정적 기록만 재생합니다.
 
 이벤트는 `status → evidence → trace → status → delta* → done` 순서로 전달됩니다. 오류는 `error`로 종결하며, 완료 이벤트 없이 끊긴 응답은 미완료로 표시합니다. KB 합성 외에 최종 모델 호출 비용이 추가됩니다.
 
@@ -71,7 +93,8 @@
     ├── Dockerfile
     ├── .dockerignore
     ├── agent/                 # Hosted Agent와 KB 호출·근거·trace 처리
-    ├── static/                # HTML/CSS/JavaScript UI
+    ├── static/                # 공통 UI, demo.js 재생, mail.* 메일, iq.* 설정·그래프 화면
+    │   └── demo/              # 공개 JSON 3개·화면 PNG 4개 (인증 정보 없음)
     ├── infra/                 # Container Apps·ACR·identity Bicep
     ├── scripts/               # 고정 버전 Markdown 브라우저 번들 생성
     └── tests/                 # Python / JavaScript 회귀 테스트
@@ -297,6 +320,8 @@ foundation what-if/배포 → ACR 원격 빌드 → 웹 what-if/배포 → **새
 
 2026-10-03 20:05(KST)의 **과거 배포 기록**은 `ca-iq-demo-web--0000011` Ready, 정적 파일·시나리오 원본·도식 일치를 확인했습니다. 당시 revision에는 상단 GitHub/시나리오 링크와 MES 소개·링크가 포함됐습니다. **재배포하면 revision이 바뀌므로 이 번호를 현재 배포 버전으로 사용하지 마세요.** 이는 당시 웹 배포 검증이며 현재 질문들의 KB·모델 호출 성공 또는 현재 Fabric 상태를 뜻하지 않습니다.
 
+2026-10-08 **클릭스루 배포 검증 기록**은 `ca-iq-demo-web--0000016` Ready, 이미지 `iq-demo-web:52c078aa1fd806fb`입니다. 기존 빌드 context와 ACR 빌드를 사용한 뒤 **웹 이미지만 교체**했으며, 이전 revision과 환경 변수·비밀값 참조·리소스 크기·스케일 설정의 일치를 확인했습니다. 공개 경로와 모든 정적 파일의 바이트 일치, 실제 API의 미인증 401, 기존 Entra 로그인 redirect를 검증했습니다. Hosted Agent·KB·Entra 앱 등록은 변경하지 않았으며, 이 배포 검증에서 로그인 후 새 리얼 질문을 실행한 것은 아닙니다.
+
 **이미 등록한 동일 URL·동일 Entra 앱의 소스만 재배포**하는 경우에는 다음 명령으로 기존 앱 등록을 건드리지 않을 수 있습니다. 이 옵션은 Graph 조회·변경을 하지 않으며, 신규 URL/앱 최초 배포에는 사용하지 않습니다. 실행 후 실제 브라우저 로그인을 확인합니다.
 
 ```bash
@@ -313,7 +338,7 @@ foundation what-if/배포 → ACR 원격 빌드 → 웹 what-if/배포 → **새
 
 최초 East US 환경은 용량 부족으로 실패해 웹만 East US 2로 전환했습니다. 기존 ACR·identity는 재사용하고 실패한 환경만 삭제했습니다.
 
-[Dockerfile](code/Dockerfile)과 [allowlist](code/.dockerignore)를 사용하며, [배포 스크립트](code/deploy_web.py)가 웹 파일·추출한 질문 JSON·00 공개 README·SVG 도식 2개를 담은 임시 context를 만듭니다. **노트북 원본·저장 출력·`.env`·로그·Agent 서버 코드는 이미지에 넣지 않습니다.** 소스 폴더에서 직접 `docker build .`를 하는 대신 위 스크립트를 사용합니다.
+[Dockerfile](code/Dockerfile)과 [allowlist](code/.dockerignore)를 사용하며, [배포 스크립트](code/deploy_web.py)가 웹 파일·추출한 질문 JSON·공개 클릭스루 JSON 3개와 PNG 4개·00 공개 README·SVG 도식 2개를 담은 임시 context를 만듭니다. 중첩된 데모 데이터와 화면 이미지도 배포 후 바이트 일치를 확인합니다. **노트북 원본·저장 출력·`.env`·로그·Agent 서버 코드는 이미지에 넣지 않습니다.** 소스 폴더에서 직접 `docker build .`를 하는 대신 위 스크립트를 사용합니다. 클릭스루 변경은 웹만 재배포하며 Hosted Agent 재배포나 Entra 앱 등록 변경은 필요하지 않습니다.
 
 컨테이너는 non-root, HTTPS only, readiness/liveness probe, Secure 세션 쿠키·HSTS로 실행됩니다. Entra 비밀값은 secure ARM parameter → Container Apps secret → `secretRef`로 주입합니다. 기존 localhost callback은 보존하고 배포 HTTPS callback만 추가합니다.
 

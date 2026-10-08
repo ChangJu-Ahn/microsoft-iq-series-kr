@@ -4,8 +4,12 @@ import {renderComparison} from "./comparison.js";
 import {renderMarkdown} from "./markdown.js";
 import {indexReferences, renderReferences, sourceInfo} from "./references.js";
 import {questionChoices, questionFromSelection, matchingQuestion} from "./question-picker.js";
+import {loadDemo, recordingFor, replay} from "./demo.js";
 
 const $ = id => document.getElementById(id);
+const isDemo = location.pathname.replace(/\/$/, "") === "/demo";
+const demoQuestionHelp = "공정·품질 KB별로 기록된 질문 2개를 선택할 수 있습니다. 질문 내용과 검색 강도는 기록 당시와 동일합니다.";
+let demoData;
 let csrf = "";
 let questions = [];
 let selectedSample = "";
@@ -16,10 +20,14 @@ const controls = ["kb", "reasoning-effort", "question", "sample", "send"];
 
 function comparison() {
   renderComparison($("comparison-results"), history, $("kb").value, $("question").value);
+  if (isDemo && !history.some(item => item.kb === $("kb").value && item.question === $("question").value)) {
+    $("comparison-results").replaceChildren(node("p", "질문을 재생하면 기록 당시의 Medium 실행 정보를 표시합니다.", "small"));
+  }
 }
 
 function updateArchitecture() {
   const selected = $("kb").value;
+  if (isDemo) $("demo-foundry-link").href = `/demo/foundry?kb=${selected}`;
   $("architecture-selection").textContent = selected === "process" ? "공정 KB 선택" : "품질 KB 선택";
   for (const branch of document.querySelectorAll(".architecture-branch")) {
     branch.classList.toggle("is-selected", branch.dataset.kb === selected);
@@ -34,8 +42,9 @@ async function showCatalog() {
   const container = $("catalog-content");
   container.textContent = "KB와 연결된 KS 설명을 읽고 있습니다…";
   try {
-    const data = await (await api(`/api/knowledge-base?kb=${encodeURIComponent(selected)}`,
-      {signal: current.signal})).json();
+    const data = isDemo ? demoData.catalogs[selected] :
+      await (await api(`/api/knowledge-base?kb=${encodeURIComponent(selected)}`,
+        {signal: current.signal})).json();
     if (current.signal.aborted || selected !== $("kb").value) return;
     container.replaceChildren(node("h2", data.name), node("p", data.description || "등록된 KB 설명이 없습니다."));
     container.append(node("p", `KB 기본 추론 강도: ${data.default_reasoning_effort || "미설정"} · 질문 영역의 선택값이 요청 단위로 우선 적용됩니다.`, "small"));
@@ -131,10 +140,11 @@ $("question-list").onclick = event => {
     $("question").value = selected.question;
     if (changedKB) refreshKnowledgeBase();
     else {
-      resetAnswer("실습 질문을 선택했습니다. 수정하거나 조회를 실행하세요.");
+      resetAnswer(isDemo ? "데모 질문을 선택했습니다. 기록된 응답을 재생하세요." : "실습 질문을 선택했습니다. 수정하거나 조회를 실행하세요.");
       comparison();
     }
-    $("sample-help").textContent = `05 실습 질문 ${Number(selectedSample) + 1}을 선택했습니다. 아래에서 자유롭게 수정할 수 있습니다.`;
+    $("sample-help").textContent = isDemo ? demoQuestionHelp :
+      `05 실습 질문 ${Number(selectedSample) + 1}을 선택했습니다. 아래에서 자유롭게 수정할 수 있습니다.`;
     $("question-dialog").close();
     $("question").focus();
   } catch (error) {
@@ -148,7 +158,7 @@ $("kb").onchange = () => {
     if (first) $("question").value = first.question;
   }
   selectedSample = matchingQuestion(questions, $("kb").value, $("question").value);
-  $("sample-help").textContent = selectedSample === "" ? "직접 작성한 질문을 유지했습니다." : "선택한 Knowledge Base의 실습 질문입니다. 팝업에서 다른 질문을 고를 수 있습니다.";
+  $("sample-help").textContent = isDemo ? demoQuestionHelp : selectedSample === "" ? "직접 작성한 질문을 유지했습니다." : "선택한 Knowledge Base의 실습 질문입니다. 팝업에서 다른 질문을 고를 수 있습니다.";
   refreshKnowledgeBase();
 };
 $("question").oninput = () => {
@@ -206,23 +216,29 @@ $("question-form").onsubmit = async event => {
   $("answer-sources").replaceChildren();
   $("answer-sources-section").hidden = true;
   $("sources").replaceChildren();
-  $("debug-content").textContent = "Foundry IQ 실행 기록을 기다리고 있습니다.";
+  $("debug-content").textContent = isDemo ? "기록된 Foundry IQ 실행 과정을 불러옵니다." : "Foundry IQ 실행 기록을 기다리고 있습니다.";
   $("response").hidden = false;
   $("latency").hidden = true;
   $("status").className = "";
-  $("status").textContent = "Hosted Agent에 연결합니다…";
+  $("status").textContent = isDemo ? "저장된 응답을 재생합니다. 실제 서비스를 호출하지 않습니다…" : "Hosted Agent에 연결합니다…";
   let completed = false;
   try {
-    const response = await api("/api/chat", {
-      method: "POST", signal: controller.signal,
-      headers: {"Content-Type": "application/json", "X-CSRF-Token": csrf},
-      body: JSON.stringify(request),
-    });
-    for await (const {name, data} of readEvents(response.body)) {
-      if (name === "status") $("status").textContent = data.message;
+    let events;
+    if (isDemo) {
+      events = replay(recordingFor(demoData, request), controller.signal);
+    } else {
+      const response = await api("/api/chat", {
+        method: "POST", signal: controller.signal,
+        headers: {"Content-Type": "application/json", "X-CSRF-Token": csrf},
+        body: JSON.stringify(request),
+      });
+      events = readEvents(response.body);
+    }
+    for await (const {name, data} of events) {
+      if (name === "status") $("status").textContent = (isDemo ? "기록 재생 · " : "") + data.message;
       if (name === "evidence") evidence(data);
       if (name === "trace") {
-        references = indexReferences(data.references);
+        references = indexReferences(data.references, {allowDemoMail: isDemo});
         citationKey = null;
         renderTrace($("debug-content"), data);
         if (answerMarkdown) renderAnswer();
@@ -240,16 +256,18 @@ $("question-form").onsubmit = async event => {
         completion = data;
         completed = true;
         evidence(data.evidence);
-        $("status").textContent = `${data.reasoning_effort} · ${data.evidence.passed ? "전체 소스 응답·인용 확인 (업무 내용은 별도 검토)" : "부분 확인 · 누락/오류/인용을 확인하세요"} · ${data.elapsed_seconds}초 · ${data.delta_count}개 실시간 delta`;
+        $("status").textContent = `${isDemo ? "기록 재생 완료 · " : ""}${data.reasoning_effort} · ${data.evidence.passed ? "전체 소스 응답·인용 확인 (업무 내용은 별도 검토)" : "부분 확인 · 누락/오류/인용을 확인하세요"} · ${data.elapsed_seconds}초 · ${data.delta_count}개 ${isDemo ? "기록된" : "실시간"} delta`;
         if (!data.evidence.passed) $("status").className = "error";
       }
     }
     if (!completed) throw new Error("완료 이벤트 없이 연결이 종료됐습니다. 답변은 미완료입니다.");
     const clientElapsed = (performance.now() - clientStarted) / 1000;
-    history.push({...request, ...completion, client_elapsed_seconds: clientElapsed});
+    history.push({...request, ...completion, client_elapsed_seconds: isDemo ? null : clientElapsed});
     if (history.length > 10) history.shift();
     comparison();
-    $("latency").textContent = `KB 조회 ${completion.retrieval_seconds}초 · 모델 생성 ${completion.generation_seconds}초 · 첫 답변(Agent) ${completion.first_delta_seconds}초 · 전체(Agent) ${completion.elapsed_seconds}초 · 첫 답변(브라우저) ${clientFirstDelta?.toFixed(3) ?? "미수신"}초 · 전체(브라우저) ${clientElapsed.toFixed(3)}초`;
+    $("latency").textContent = isDemo
+      ? `기록 당시 측정값 · KB 조회 ${completion.retrieval_seconds}초 · 모델 생성 ${completion.generation_seconds}초 · 전체(Agent) ${completion.elapsed_seconds}초 — 현재 재생 시간과 다릅니다.`
+      : `KB 조회 ${completion.retrieval_seconds}초 · 모델 생성 ${completion.generation_seconds}초 · 첫 답변(Agent) ${completion.first_delta_seconds}초 · 전체(Agent) ${completion.elapsed_seconds}초 · 첫 답변(브라우저) ${clientFirstDelta?.toFixed(3) ?? "미수신"}초 · 전체(브라우저) ${clientElapsed.toFixed(3)}초`;
     $("latency").hidden = false;
   } catch (error) {
     $("status").className = "error";
@@ -258,12 +276,48 @@ $("question-form").onsubmit = async event => {
     if (renderFrame !== null) cancelAnimationFrame(renderFrame);
     renderAnswer();
     for (const id of controls) $(id).disabled = false;
+    if (isDemo) $("reasoning-effort").disabled = true;
     $("cancel").hidden = true;
     controller = null;
   }
 };
 
-try {
+if (isDemo) {
+  $("login-panel").hidden = true;
+  $("chat-panel").hidden = false;
+  $("logout").hidden = true;
+  $("demo-notice").hidden = false;
+  $("demo-tools").hidden = false;
+  $("user").textContent = "클릭스루 데모 · 로그인 없이 체험";
+  $("question").readOnly = true;
+  $("send").textContent = "기록된 응답 재생 →";
+  $("sample").textContent = "데모 질문 4개 보기";
+  $("question-dialog-title").textContent = "기록된 데모 질문";
+  $("question-dialog-help").textContent = "공정·품질 KB별 2개 질문의 전문입니다. 선택 후 ‘기록된 응답 재생’을 누르세요.";
+  $("reasoning-help").textContent = "이 데모는 Medium으로 실행한 기록입니다. Low 비교와 자유 질문은 리얼 데모에서 사용할 수 있습니다.";
+  $("catalog-help").textContent = "기록 시점의 실제 KB·KS 설명입니다. 현재 Azure에 연결하지 않습니다.";
+  $("comparison-heading").textContent = "기록 당시의 실행 정보";
+  $("comparison-help").textContent = "표의 Agent 시간·계획·검색 횟수는 실제 실행 기록입니다. 현재 재생 속도와 다릅니다. 원본 브라우저 시간은 기록하지 않아 미제공으로 표시합니다. Low 비교는 리얼 데모에서 가능합니다.";
+  $("execution-help").textContent = "실제 응답의 저장된 delta를 짧은 간격으로 재생합니다. 부분 확인·누락·불확실성도 그대로 유지하며, 실제 출하 승인이나 조치를 수행하지 않습니다.";
+  for (const id of controls) $(id).disabled = true;
+  try {
+    demoData = await loadDemo();
+    questions = demoData.cases.map(({kb, question}) => ({kb, question}));
+    populateQuestionChoices();
+    $("question").value = questions.find(item => item.kb === $("kb").value).question;
+    selectedSample = matchingQuestion(questions, $("kb").value, $("question").value);
+    $("sample-help").textContent = demoQuestionHelp;
+    $("status").textContent = "질문을 선택하고 기록된 응답을 재생하세요.";
+    updateArchitecture();
+    showCatalog();
+    comparison();
+    for (const id of controls) $(id).disabled = false;
+    $("reasoning-effort").disabled = true;
+  } catch (error) {
+    $("page-error").textContent = `클릭스루 데모를 시작하지 못했습니다: ${error.message}`;
+    $("status").textContent = "데모 기록을 불러오지 못했습니다. 새로고침하거나 리얼 데모로 이동하세요.";
+  }
+} else try {
   const response = await fetch("/api/me");
   if (response.status !== 401) {
     if (!response.ok) throw new Error(`세션 확인 실패: HTTP ${response.status}`);

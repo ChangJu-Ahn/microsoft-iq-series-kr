@@ -1,0 +1,13 @@
+.iq-main{max-width:1440px}.iq-main>h1{font-size:clamp(26px,4vw,38px);letter-spacing:-1px;line-height:1.35}
+.iq-view-options{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.iq-view-options button[aria-pressed=true]{background:#375bce;color:#fff}
+.iq-capture{border:1px solid #d4deed;border-radius:12px;background:#fff;overflow:hidden}.iq-capture-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;border-bottom:1px solid #dde5f0;flex-wrap:wrap}
+.iq-capture-toolbar h2{margin:0;font-size:17px}.iq-capture-toolbar .small{margin:8px 0 0}
+.iq-zoom-control{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.iq-zoom-control label{margin:0;font-size:12px}.iq-zoom-control select{width:140px;margin:0;padding:9px;font-size:12px}.iq-zoom-control button{font-size:12px;padding:10px 14px}
+.iq-image-viewport{overflow:auto;max-height:82vh;min-width:0;background:#f7f8fa}.iq-image-viewport img{display:block;height:auto;width:100%;max-width:none}
+.iq-image-viewport img[hidden]{display:none}.iq-image-viewport.zoom-150 img{width:150%}.iq-image-viewport.zoom-200 img{width:200%}
+.iq-image-viewport.zoom-fit img{width:auto;max-width:100%;max-height:82vh;margin:auto}
+.iq-details{margin-top:24px}.iq-details h2{overflow-wrap:anywhere}.iq-detail{margin:12px 0;border:1px solid #dae3f0;border-radius:8px;padding:14px 16px}.iq-detail summary{cursor:pointer;font-size:13px;font-weight:650;overflow-wrap:anywhere;color:#385880}.iq-detail p{white-space:pre-wrap;font-size:13px;line-height:1.9}
+.iq-setting-summary{display:grid;grid-template-columns:minmax(130px,180px) minmax(0,1fr);gap:10px 20px;font-size:13px;padding:20px;background:#f5f8fe;border-radius:8px}.iq-setting-summary dt{font-weight:650}.iq-setting-summary dd{margin:0;overflow-wrap:anywhere}
+.iq-entities{display:flex;gap:8px;flex-wrap:wrap}.iq-image-dialog{width:96vw;max-width:1800px;max-height:96vh;border:1px solid #cbd7ec;border-radius:12px;padding:0}.iq-image-dialog::backdrop{background:#12223dcc}.iq-image-dialog[open]{display:flex;flex-direction:column}.iq-dialog-body{overflow:auto}.iq-dialog-body img{display:block;min-width:100%;height:auto}
+#iq-error{color:#a72834;font-size:13px}
+@media(max-width:600px){.iq-capture-toolbar{padding:14px}.iq-setting-summary{grid-template-columns:1fr;gap:6px}.iq-setting-summary dd{margin-bottom:12px}.iq-details{padding:18px}.iq-detail{padding:12px}.iq-view-options button{flex:1 1 200px}}

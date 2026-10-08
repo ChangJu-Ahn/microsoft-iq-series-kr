@@ -77,6 +77,60 @@ class WebTests(unittest.TestCase):
         self.assertIn("Entra ID", response.text)
         self.assertIn("default-src 'self'", response.headers["content-security-policy"])
 
+    def test_clickthrough_reuses_home_without_relaxing_authentication(self):
+        home = self.client.get("/")
+        demo = self.client.get("/demo")
+        self.assertEqual(200, demo.status_code)
+        self.assertEqual(home.content, demo.content)
+        self.assertIn('href="/auth/login"', home.text)
+        self.assertIn('href="/demo"', home.text)
+        self.assertIn('id="demo-notice"', demo.text)
+        self.assertIn('href="/demo/mail"', demo.text)
+        for path in ["/api/me", "/api/questions", "/api/knowledge-base?kb=quality"]:
+            self.assertEqual(401, self.client.get(path).status_code)
+        self.assertEqual(401, self.client.post("/api/chat", json={
+            "kb": "quality", "question": "q"
+        }).status_code)
+
+    def test_clickthrough_mail_is_public_and_read_only(self):
+        response = self.client.get("/demo/mail")
+        self.assertEqual(200, response.status_code)
+        self.assertIn('id="mail-list"', response.text)
+        self.assertIn('id="mail-body"', response.text)
+        self.assertIn('id="mail-error"', response.text)
+        self.assertIn("default-src 'self'", response.headers["content-security-policy"])
+        self.assertEqual(405, self.client.post("/demo/mail").status_code)
+
+    def test_mail_and_iq_pages_share_navigation_and_mail_marks_current_page(self):
+        mail = self.client.get("/demo/mail").text
+        mail_header = mail.split("<header", 1)[1].split("</header>", 1)[0]
+        for route in ["/demo/mail", "/demo/foundry", "/demo/fabric"]:
+            with self.subTest(route=route):
+                html = self.client.get(route).text
+                header = html.split("<header", 1)[1].split("</header>", 1)[0]
+                self.assertIn('class="site-header"', header)
+                self.assertIn('class="top-nav"', header)
+                self.assertIn('aria-label="클릭스루 데모 이동"', header)
+                for destination in ["/demo", "/demo/mail", "/demo/foundry", "/demo/fabric"]:
+                    self.assertIn(f'href="{destination}"', header)
+                self.assertIn('class="tag">로그인 없는 클릭스루', header)
+        self.assertIn('href="/demo/mail" aria-current="page"', mail_header)
+
+    def test_iq_reference_views_are_public_without_embedded_portal_sessions(self):
+        for route in ["/demo/foundry", "/demo/fabric"]:
+            with self.subTest(route=route):
+                response = self.client.get(route)
+                self.assertEqual(200, response.status_code)
+                self.assertIn('id="iq-view-options"', response.text)
+                self.assertIn('id="iq-image"', response.text)
+                self.assertIn('id="iq-zoom"', response.text)
+                self.assertNotIn("<iframe", response.text)
+                self.assertNotIn("/auth/login", response.text)
+                self.assertEqual(405, self.client.post(route).status_code)
+        home = self.client.get("/").text
+        self.assertIn('href="/demo/foundry"', home)
+        self.assertIn('href="/demo/fabric"', home)
+
     def test_knowledge_context_is_a_sidebar_not_an_exclusive_tab(self):
         response = self.client.get("/")
         self.assertIn('class="workspace-layout"', response.text)

@@ -77,10 +77,24 @@
       <h2>내 계정의 권한으로 시작하기</h2>
       <p>Work IQ와 Fabric 원본에 접근 가능한 워크숍 계정으로 로그인하세요. 로그인만으로 데이터 접근 권한이 추가되지는 않습니다.</p>
       <a class="button" href="/auth/login">Entra ID로 로그인 →</a>
+      <a class="button secondary" href="/demo">데모 · 로그인 없이 체험 →</a>
       <p class="small">참가자 실습은 05 Foundry IQ의 API 테스트까지입니다. 이 화면은 완성된 서비스 흐름을 보여주는 별도 POC입니다.</p>
     </section>
     <section id="chat-panel" class="card" hidden>
-      <div class="toolbar"><span id="user"></span><button id="logout" class="secondary">로그아웃</button></div>
+      <div id="demo-notice" class="demo-notice" hidden>
+        <strong>클릭스루 데모 · 실제 응답 기록 재생</strong>
+        <p>실제 로그인으로 실행한 공정·품질 질문 2개씩을 같은 화면에서 체험합니다. 모든 KS의 근거와 최종 인용을 확인한 기록입니다. 지금은 로그인·검색·모델 호출을 하지 않으며, 재생 속도는 실제 처리 속도가 아닙니다.</p>
+      </div>
+      <div class="toolbar">
+        <span id="user"></span>
+        <div id="demo-tools" class="demo-tools" hidden>
+          <a class="button secondary" href="/demo/mail" target="_blank" rel="noopener noreferrer">아웃룩 이메일 보기 ↗</a>
+          <a id="demo-foundry-link" class="button secondary" href="/demo/foundry" target="_blank" rel="noopener noreferrer">Foundry IQ 설정 보기 ↗</a>
+          <a class="button secondary" href="/demo/fabric" target="_blank" rel="noopener noreferrer">Fabric IQ 화면 보기 ↗</a>
+          <a class="button secondary" href="/">리얼 데모로 이동</a>
+        </div>
+        <button id="logout" class="secondary">로그아웃</button>
+      </div>
       <div class="workspace-layout">
       <section class="question-workspace" aria-label="질문과 근거 기반 답변">
       <label for="kb">조회할 Knowledge Base</label>
@@ -111,9 +125,9 @@
         <div id="answer-sources"></div>
       </section>
       <section class="comparison">
-        <h2>같은 질문의 모드별 실행 비교</h2>
+        <h2 id="comparison-heading">같은 질문의 모드별 실행 비교</h2>
         <div id="comparison-results" class="table-scroll"><p class="small">질문을 실행하면 비교 결과를 표시합니다.</p></div>
-        <p class="small">현재 KB·동일 질문만 비교합니다. 최근 완료 실행 10개를 브라우저 메모리에만 유지하며 새로고침 시 초기화합니다. 추가 호출에는 동일 소스의 병렬 하위 검색도 포함되며 재검색 루프 수와 다릅니다. KB 시간은 계획·검색·합성의 wall time입니다. 첫 답변/전체 시간은 Agent 시작 기준이며 브라우저 시간에는 인증·네트워크·기동 지연도 포함됩니다. 단일 실행으로 성능 우열을 단정하지 마세요.</p>
+        <p id="comparison-help" class="small">현재 KB·동일 질문만 비교합니다. 최근 완료 실행 10개를 브라우저 메모리에만 유지하며 새로고침 시 초기화합니다. 추가 호출에는 동일 소스의 병렬 하위 검색도 포함되며 재검색 루프 수와 다릅니다. KB 시간은 계획·검색·합성의 wall time입니다. 첫 답변/전체 시간은 Agent 시작 기준이며 브라우저 시간에는 인증·네트워크·기동 지연도 포함됩니다. 단일 실행으로 성능 우열을 단정하지 마세요.</p>
       </section>
       <section class="debug-section">
         <label class="debug-toggle"><input type="checkbox" id="debug-toggle"> Foundry IQ 실행 기록 보기 <span>Debug</span></label>
@@ -122,12 +136,12 @@
           <div id="debug-content"><p>질문을 실행하면 반환된 계획·검색·근거 연결을 여기에 표시합니다.</p></div>
         </div>
       </section>
-      <p class="small">KB 조회 후 모델 답변이 실시간 생성됩니다. 부분 실패는 전체 성공이 아니며, 요청·가설을 승인·확정 사실로 해석하지 마세요. 세션과 토큰은 서버 메모리에서만 유지됩니다.</p>
+      <p id="execution-help" class="small">KB 조회 후 모델 답변이 실시간 생성됩니다. 부분 실패는 전체 성공이 아니며, 요청·가설을 승인·확정 사실로 해석하지 마세요. 세션과 토큰은 서버 메모리에서만 유지됩니다.</p>
       </section>
       </section>
       <aside id="catalog-panel" class="catalog-sidebar" aria-labelledby="catalog-heading">
         <h2 id="catalog-heading">Knowledge Base</h2>
-        <p class="small">질문하면서 현재 KB와 연결된 KS의 역할을 함께 확인하세요. 실제 Azure 설명을 읽으며 모델·검색 호출은 발생하지 않습니다.</p>
+        <p id="catalog-help" class="small">질문하면서 현재 KB와 연결된 KS의 역할을 함께 확인하세요. 실제 Azure 설명을 읽으며 모델·검색 호출은 발생하지 않습니다.</p>
         <div id="catalog-content" aria-live="polite"></div>
       </aside>
       </div>

@@ -160,6 +160,18 @@ def set_cookie(response, sid: str):
                         samesite="lax", max_age=3600, path="/")
 
 
+@app.get("/demo/mail")
+async def demo_mail_page():
+    return FileResponse(ROOT / "static/mail.html")
+
+
+@app.get("/demo/foundry")
+@app.get("/demo/fabric")
+async def demo_iq_page():
+    return FileResponse(ROOT / "static/iq.html")
+
+
+@app.get("/demo")
 @app.get("/")
 async def home():
     return FileResponse(ROOT / "static/index.html")

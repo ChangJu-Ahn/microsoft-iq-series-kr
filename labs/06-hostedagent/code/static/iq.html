@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>IQ 구성 화면 · 클릭스루 데모</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/iq.css">
+  <script type="module" src="/static/iq.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/demo">Microsoft <strong>IQ Series</strong></a>
+    <nav class="top-nav" aria-label="클릭스루 데모 이동">
+      <a href="/demo">질문 데모</a>
+      <a href="/demo/mail">아웃룩 이메일</a>
+      <a href="/demo/foundry">Foundry IQ 설정</a>
+      <a href="/demo/fabric">Fabric IQ 화면</a>
+    </nav>
+    <span class="tag">로그인 없는 클릭스루</span>
+  </header>
+  <main class="iq-main">
+    <p class="eyebrow">RECORDED EXPERIENCE</p>
+    <h1 id="iq-title">IQ 구성 화면</h1>
+    <p id="iq-description"></p>
+    <div class="demo-notice">
+      <strong>실제 설정 화면의 읽기 전용 기록</strong>
+      <p>로그인이나 외부 포털 연결 없이 확인합니다. 화면 전환·확대·설명 펼치기만 동작하며, 이미지 안의 저장·삭제·질문 실행은 동작하지 않습니다. 실제 서비스 설정은 변경하지 않습니다.</p>
+    </div>
+    <div id="iq-view-options" class="iq-view-options" role="group" aria-label="참고 화면 선택"></div>
+    <section class="iq-capture" aria-labelledby="iq-capture-title">
+      <div class="iq-capture-toolbar">
+        <div><h2 id="iq-capture-title">기록된 화면</h2><p id="iq-capture-note" class="small"></p></div>
+        <div class="iq-zoom-control">
+          <label for="iq-zoom">화면 확대</label>
+          <select id="iq-zoom" disabled>
+            <option value="fit">화면에 맞춤</option>
+            <option value="150">150%</option>
+            <option value="200">200%</option>
+          </select>
+          <button id="iq-focus" class="secondary" type="button" disabled>화면 크게 보기</button>
+        </div>
+      </div>
+      <div id="iq-image-viewport" class="iq-image-viewport zoom-fit" tabindex="0" aria-label="기록 화면 · 확대 시 스크롤로 이동">
+        <img id="iq-image" alt="" hidden>
+      </div>
+    </section>
+    <p id="iq-error" role="alert"></p>
+    <section id="iq-details" class="card iq-details" aria-label="기록된 구성 설명"></section>
+    <dialog id="iq-image-dialog" class="iq-image-dialog" aria-labelledby="iq-dialog-title">
+      <div class="question-dialog-header">
+        <h2 id="iq-dialog-title">기록된 화면 확대</h2>
+        <button id="iq-dialog-close" class="secondary" type="button" autofocus>닫기</button>
+      </div>
+      <div class="iq-dialog-body"><img id="iq-dialog-image" alt=""></div>
+    </dialog>
+  </main>
+</body>
+</html>

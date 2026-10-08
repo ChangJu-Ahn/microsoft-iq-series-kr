@@ -56,6 +56,15 @@ test("source labels preserve the actual connected source, including unknown sour
   assert.equal(sourceInfo(null).label, "출처 미연결");
 });
 
+test("recorded Outlook links open local mail only in explicit clickthrough mode", () => {
+  const refs = [{id: "1", source: "ks-quality-workiq-v2", citationUrl: "/demo/mail#mail-8"}];
+  assert.equal(indexReferences(refs).get("1").url, null);
+  assert.equal(indexReferences(refs, {allowDemoMail: true}).get("1").url, "/demo/mail#mail-8");
+  for (const citationUrl of ["//evil.test/mail", "/auth/login", "/demo/mail#bad"]) {
+    assert.equal(indexReferences([{id: "1", citationUrl}], {allowDemoMail: true}).get("1").url, null);
+  }
+});
+
 test("evidence body uses extracted passage and reports its actual field and limit", () => {
   const body = referenceContent({
     sourceContentStatus: "available", sourcePreview: "장비 점검 본문",
